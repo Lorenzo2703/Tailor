@@ -75,6 +75,33 @@ isOneToOne: true
       referencedColumns: ["animal_id"]
     }
                   ]
+                },"favorites": {
+                  Row: {
+                    "id": string,"listing_id": string,"profile_id": string,"created_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id"?: string,"listing_id": string,"profile_id": string,"created_at"?: string
+                  }
+                  Update: {
+                    "id"?: string,"listing_id"?: string,"profile_id"?: string,"created_at"?: string
+                  }
+                  Relationships: [
+                    {
+                      foreignKeyName: "favorites_listing_id_fkey"
+                      columns: ["listing_id"]
+                      isOneToOne: false
+                      referencedRelation: "listings"
+                      referencedColumns: ["id"]
+                    },
+                    {
+                      foreignKeyName: "favorites_profile_id_fkey"
+                      columns: ["profile_id"]
+                      isOneToOne: false
+                      referencedRelation: "profiles"
+                      referencedColumns: ["id"]
+                    }
+                  ]
                 },"animals": {
                   Row: {
                     "apartment_ok": boolean | null,"birth_date": string,"breed": string | null,"city": string,"created_at": string,"good_with_cats": boolean | null,"good_with_dogs": boolean | null,"good_with_kids": boolean | null,"id": string,"location": unknown,"name": string,"organization_id": string | null,"origin": Database["public"]['Enums']["animal_origin"] | null,"profile_id": string | null,"sex": Database["public"]['Enums']["animal_sex"],"size": Database["public"]['Enums']["animal_size"],"species": Database["public"]['Enums']["species"],"status": Database["public"]['Enums']["animal_status"],"story": string | null,"updated_at": string
@@ -475,6 +502,9 @@ isOneToOne: true
                            },
 "storage_org_id":
 { Args: { "object_name": string }; Returns: string
+                           },
+"export_user_data":
+{ Args: { "user_id": string }; Returns: Json
                            },
 "switch_to_private_account":
 { Args: Record<PropertyKey, never>; Returns: undefined

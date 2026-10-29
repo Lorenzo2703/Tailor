@@ -3,6 +3,8 @@ import Link from "next/link";
 import { authContent } from "@/lib/content/auth";
 import { inquiryContent } from "@/lib/content/inquiries";
 import { organizationContent } from "@/lib/content/organizations";
+import { AccountGdprSection } from "@/components/app/account-gdpr-section";
+import { favoritesContent } from "@/lib/content/favorites";
 import { NotificationPrefsForm } from "@/components/inquiries/notification-prefs-form";
 import { signOut } from "@/server/actions/auth";
 import { getNotificationPrefs } from "@/server/queries/inquiries";
@@ -81,6 +83,17 @@ export default async function AccountPage() {
                 ) : null}
             </section>
 
+            <section aria-labelledby="favorites-title">
+                <h2 id="favorites-title" className="auth-section-title">
+                    {favoritesContent.title}
+                </h2>
+                <p className="auth-footer" style={{ marginTop: "0.5rem" }}>
+                    <Link className="auth-link" href="/favorites">
+                        Visualizza i tuoi annunci salvati
+                    </Link>
+                </p>
+            </section>
+
             <section aria-labelledby="inquiries-title">
                 <h2 id="inquiries-title" className="auth-section-title">
                     {inquiryContent.inbox.title}
@@ -95,6 +108,8 @@ export default async function AccountPage() {
                 </h3>
                 <NotificationPrefsForm emailInquiries={prefs.emailInquiries} />
             </section>
+
+            <AccountGdprSection />
 
             <form action={signOut} style={{ marginTop: "2rem" }}>
                 <button type="submit" className="auth-button" data-variant="secondary">

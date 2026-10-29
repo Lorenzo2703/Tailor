@@ -12,9 +12,9 @@ type NavItem = {
 };
 
 const navItems: NavItem[] = [
-  { href: "/app", label: "Esplora", icon: Compass, available: true },
-  { href: "/app/favorites", label: "Preferiti", icon: Heart, available: false },
-  { href: "/app/shelter", label: "Rifugio", icon: House, available: false },
+  { href: "/animals", label: "Esplora", icon: Compass, available: true },
+  { href: "/favorites", label: "Preferiti", icon: Heart, available: true },
+  { href: "/account", label: "Account", icon: House, available: true },
 ];
 
 export function AppNav() {
