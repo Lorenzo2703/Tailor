@@ -102,6 +102,40 @@ isOneToOne: true
                       referencedColumns: ["id"]
                     }
                   ]
+                },"reports": {
+                  Row: {
+                    "id": string,"reporter_id": string | null,"listing_id": string,"reason": Database["public"]["Enums"]["report_reason"],"details": string | null,"status": Database["public"]["Enums"]["report_status"],"handled_by": string | null,"handled_at": string | null,"resolution_notes": string | null,"created_at": string,"updated_at": string
+                  }
+                  ComputedFields: never
+                  Insert: {
+                    "id"?: string,"reporter_id"?: string | null,"listing_id": string,"reason": Database["public"]["Enums"]["report_reason"],"details"?: string | null,"status"?: Database["public"]["Enums"]["report_status"],"handled_by"?: string | null,"handled_at"?: string | null,"resolution_notes"?: string | null,"created_at"?: string,"updated_at"?: string
+                  }
+                  Update: {
+                    "id"?: string,"reporter_id"?: string | null,"listing_id"?: string,"reason"?: Database["public"]["Enums"]["report_reason"],"details"?: string | null,"status"?: Database["public"]["Enums"]["report_status"],"handled_by"?: string | null,"handled_at"?: string | null,"resolution_notes"?: string | null,"created_at"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+                      foreignKeyName: "reports_listing_id_fkey"
+                      columns: ["listing_id"]
+                      isOneToOne: false
+                      referencedRelation: "listings"
+                      referencedColumns: ["id"]
+                    },
+                    {
+                      foreignKeyName: "reports_reporter_id_fkey"
+                      columns: ["reporter_id"]
+                      isOneToOne: false
+                      referencedRelation: "profiles"
+                      referencedColumns: ["id"]
+                    },
+                    {
+                      foreignKeyName: "reports_handled_by_fkey"
+                      columns: ["handled_by"]
+                      isOneToOne: false
+                      referencedRelation: "profiles"
+                      referencedColumns: ["id"]
+                    }
+                  ]
                 },"animals": {
                   Row: {
                     "apartment_ok": boolean | null,"birth_date": string,"breed": string | null,"city": string,"created_at": string,"good_with_cats": boolean | null,"good_with_dogs": boolean | null,"good_with_kids": boolean | null,"id": string,"location": unknown,"name": string,"organization_id": string | null,"origin": Database["public"]['Enums']["animal_origin"] | null,"profile_id": string | null,"sex": Database["public"]['Enums']["animal_sex"],"size": Database["public"]['Enums']["animal_size"],"species": Database["public"]['Enums']["species"],"status": Database["public"]['Enums']["animal_status"],"story": string | null,"updated_at": string
@@ -503,6 +537,9 @@ isOneToOne: true
 "storage_org_id":
 { Args: { "object_name": string }; Returns: string
                            },
+"admin_resolve_report":
+{ Args: { "report_id": string, "new_status": Database["public"]["Enums"]["report_status"], "takedown_listing": boolean, "notes": string }; Returns: undefined
+                           },
 "export_user_data":
 { Args: { "user_id": string }; Returns: Json
                            },
@@ -511,7 +548,7 @@ isOneToOne: true
                            }
           }
           Enums: {
-            "animal_origin": "stray_rescued"|"surrendered_by_owner"|"family_pet"|"home_litter","animal_sex": "M"|"F","animal_size": "small"|"medium"|"large","animal_status": "active"|"archived","document_status": "pending"|"accepted"|"rejected","inquiry_status": "open"|"closed"|"blocked","listing_status": "draft"|"pending_review"|"published"|"reserved"|"adopted"|"expired"|"removed","listing_type": "adoption"|"gift","org_document_type": "registration"|"statute"|"other","org_member_role": "owner"|"member","organization_type": "shelter"|"association"|"breeder","species": "dog"|"cat","user_role": "adopter"|"shelter_member"|"private"|"admin","verification_status": "pending"|"verified"|"rejected"
+            "animal_origin": "stray_rescued"|"surrendered_by_owner"|"family_pet"|"home_litter","animal_sex": "M"|"F","animal_size": "small"|"medium"|"large","animal_status": "active"|"archived","document_status": "pending"|"accepted"|"rejected","inquiry_status": "open"|"closed"|"blocked","listing_status": "draft"|"pending_review"|"published"|"reserved"|"adopted"|"expired"|"removed","listing_type": "adoption"|"gift","org_document_type": "registration"|"statute"|"other","org_member_role": "owner"|"member","organization_type": "shelter"|"association"|"breeder","species": "dog"|"cat","user_role": "adopter"|"shelter_member"|"private"|"admin","report_reason": "suspected_scam"|"commercial_sale_prohibited"|"underage_animal"|"illegal_import_or_no_microchip"|"animal_welfare_concern"|"inappropriate_content"|"other","report_status": "pending"|"investigating"|"resolved_takedown"|"dismissed","verification_status": "pending"|"verified"|"rejected"
           }
           CompositeTypes: {
             [_ in never]: never

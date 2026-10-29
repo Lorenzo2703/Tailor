@@ -74,13 +74,7 @@ export default async function AccountPage() {
                         {orgCopy.register}
                     </Link>
                 </p>
-                {role === "admin" ? (
-                    <p className="auth-footer" style={{ marginTop: "0.5rem" }}>
-                        <Link className="auth-link" href="/admin/verifications">
-                            {orgCopy.adminQueue}
-                        </Link>
-                    </p>
-                ) : null}
+                {role === "admin" ? (<><p className="auth-footer" style={{ marginTop: "0.5rem" }}><Link className="auth-link" href="/admin/verifications">{orgCopy.adminQueue}</Link></p><p className="auth-footer" style={{ marginTop: "0.5rem" }}><Link className="auth-link" href="/admin/reports">Coda Segnalazioni & Takedown</Link></p></>) : null}
             </section>
 
             <section aria-labelledby="favorites-title">
@@ -124,3 +118,4 @@ export default async function AccountPage() {
         </>
     );
 }
+

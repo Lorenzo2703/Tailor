@@ -6,6 +6,7 @@ import { publicContent } from "@/lib/content/public";
 import { getSiteUrl } from "@/lib/site";
 import { truncate } from "@/lib/text";
 import { getPublicListing } from "@/server/queries/public";
+import { ReportButton } from "@/components/listings/report-button";
 
 const copy = publicContent.detail;
 
@@ -196,6 +197,10 @@ async function Detail({ slug }: { slug: string }) {
                     </p>
                 ) : null}
             </section>
+
+            <div className="mt-8 flex justify-end border-t border-neutral-200 pt-4">
+                <ReportButton listingId={listing.listing_id} />
+            </div>
         </>
     );
 }
