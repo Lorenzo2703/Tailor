@@ -96,7 +96,7 @@ To run and contribute to this project, install the following tools:
 3. **Supabase CLI**:
    - macOS / Linux: `brew install supabase/tap/supabase`
    - Windows (via Scoop): `scoop bucket add supabase https://github.com/supabase/scoop-bucket.git && scoop install supabase`
-   - Or run with npx: `npx supabase ...`
+   - Or run with npx: `bunx supabase ...`
 4. **Git** configured with your user details.
 
 ---
@@ -119,27 +119,27 @@ npm install
 ### 3. Start local Supabase services
 Make sure Docker is running, then initialize and start Supabase:
 ```bash
-npm run db:start
-# or: npx supabase start
+bun run db:start
+# or: bunx supabase start
 ```
-*Tip: Once started, run `npm run db:status` to see local API keys, Supabase Studio URL (`http://127.0.0.1:54323`), and connection strings.*
+*Tip: Once started, run `bun run db:status` to see local API keys, Supabase Studio URL (`http://127.0.0.1:54323`), and connection strings.*
 
 ### 4. Configure environment variables
 Copy the template to `.env.local`:
 ```bash
 cp .env.example .env.local
 ```
-Fill in the values using the credentials output from `npm run db:status`. For development:
+Fill in the values using the credentials output from `bun run db:status`. For development:
 - `NEXT_PUBLIC_SUPABASE_URL`: e.g. `http://127.0.0.1:54321`
-- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: Local anon key from `npm run db:status`
-- `SUPABASE_SERVICE_ROLE_KEY`: Local service_role key from `npm run db:status`
+- `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`: Local anon key from `bun run db:status`
+- `SUPABASE_SERVICE_ROLE_KEY`: Local service_role key from `bun run db:status`
 - `NEXT_PUBLIC_TURNSTILE_SITE_KEY` & `TURNSTILE_SECRET_KEY`: Use [Cloudflare Turnstile test keys](https://developers.cloudflare.com/turnstile/troubleshooting/testing/) (`1x00000000000000000000AA` / `1x0000000000000000000000000000000000000000AA`).
 
 ### 5. Start the Next.js development server
 ```bash
 bun run dev
 # or
-npm run dev
+bun run dev
 ```
 Open [http://localhost:3000](http://localhost:3000) in your browser.
 
@@ -149,21 +149,21 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 
 | Command | Description |
 |---|---|
-| `npm run dev` / `bun run dev` | Starts the Next.js development server (Turbopack enabled) |
-| `npm run build` | Compiles the production build |
-| `npm run start` | Starts production server |
-| `npm run lint` | Runs ESLint check across all files |
-| `npm run test` | Runs unit and validation tests via Vitest |
-| `npm run env:local` | Switches `.env.local` to point to local WSL/Docker Supabase |
-| `npm run env:remote` | Switches `.env.local` to point to online Supabase project |
-| `npm run db:start` | Boots local Supabase Docker containers (Postgres, Studio, Storage, Inbucket) |
-| `npm run db:stop` | Stops local Supabase containers |
-| `npm run db:status` | Displays connection details and keys for local Supabase |
-| `npm run db:types` | Regenerates `src/lib/supabase/database.types.ts` from local database schema |
-| `npm run db:types:remote` | Regenerates TypeScript types from linked remote Supabase project |
-| `npm run db:link` | Links Supabase CLI to your remote project (`supabase link --project-ref <id>`) |
-| `npm run db:push` | Pushes local migrations to remote Supabase database |
-| `npm run db:pull` | Pulls remote schema changes into local migrations |
+| `bun run dev` / `bun run dev` | Starts the Next.js development server (Turbopack enabled) |
+| `bun run build` | Compiles the production build |
+| `bun run start` | Starts production server |
+| `bun run lint` | Runs ESLint check across all files |
+| `bun run test` | Runs unit and validation tests via Vitest |
+| `bun run env:local` | Switches `.env.local` to point to local WSL/Docker Supabase |
+| `bun run env:remote` | Switches `.env.local` to point to online Supabase project |
+| `bun run db:start` | Boots local Supabase Docker containers (Postgres, Studio, Storage, Inbucket) |
+| `bun run db:stop` | Stops local Supabase containers |
+| `bun run db:status` | Displays connection details and keys for local Supabase |
+| `bun run db:types` | Regenerates `src/lib/supabase/database.types.ts` from local database schema |
+| `bun run db:types:remote` | Regenerates TypeScript types from linked remote Supabase project |
+| `bun run db:link` | Links Supabase CLI to your remote project (`supabase link --project-ref <id>`) |
+| `bun run db:push` | Pushes local migrations to remote Supabase database |
+| `bun run db:pull` | Pulls remote schema changes into local migrations |
 
 ---
 
@@ -173,32 +173,32 @@ You can easily toggle between your local Dockerized Supabase running in WSL and 
 
 ### 1. Initial Setup
 Create two environment profile files (both are git-ignored):
-- **`.env.local.local`**: Copy from `.env.local.example` and insert keys from `npm run db:status` (WSL / Docker).
+- **`.env.local.local`**: Copy from `.env.local.example` and insert keys from `bun run db:status` (WSL / Docker).
 - **`.env.local.remote`**: Copy from `.env.remote.example` and insert keys from your Supabase Cloud Dashboard (**Settings -> API**).
 
 ### 2. Switch with one command
 ```bash
 # Switch to Local WSL/Docker Supabase:
-npm run env:local
+bun run env:local
 
 # Switch to Online Supabase:
-npm run env:remote
+bun run env:remote
 ```
 
 ### 3. Syncing Migrations to Remote Supabase
 When you want to deploy local migrations to your online Supabase instance:
 ```bash
 # 1. Login to Supabase CLI (if not already logged in)
-npx supabase login
+bunx supabase login
 
 # 2. Link your remote project
-npx supabase link --project-ref <your-project-ref>
+bunx supabase link --project-ref <your-project-ref>
 
 # 3. Push your migrations
-npm run db:push
+bun run db:push
 
 # 4. Generate types from remote
-npm run db:types:remote
+bun run db:types:remote
 ```
 
 ---
@@ -208,10 +208,10 @@ npm run db:types:remote
 ### 1. Database Migrations
 - Never edit an existing migration file once applied. Always create a new migration:
   ```bash
-  npx supabase migration new <descriptive_name>
+  bunx supabase migration new <descriptive_name>
   ```
 - Ensure any new table includes `id uuid primary key default gen_random_uuid()`, `created_at`, `updated_at`, and an explicit `ALTER TABLE ... ENABLE ROW LEVEL SECURITY;`.
-- Update TypeScript types after migrations with `npm run db:types`.
+- Update TypeScript types after migrations with `bun run db:types`.
 
 ### 2. Code Organization
 - **Server Components:** Default choice for pages and layouts. Only add `"use client"` when component requires React state, event listeners, or browser APIs.
@@ -252,7 +252,8 @@ The project follows sequential milestone delivery:
 2. Commit your changes with conventional commit syntax (`feat:`, `fix:`, `refactor:`, `test:`, `docs:`).
 3. Ensure all tests and linting pass before pushing:
    ```bash
-   npm run lint
-   npm run test
+   bun run lint
+   bun run test
    ```
 4. Push your branch and open a Pull Request with a clear description of the problem solved, testing steps, and relevant screenshots.
+
