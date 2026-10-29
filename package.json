@@ -17,10 +17,15 @@
     "db:push": "supabase db push",
     "db:pull": "supabase db pull",
     "env:local": "node -e \"const fs = require('fs'); if (!fs.existsSync('.env.local.backup') && fs.existsSync('.env.local')) fs.copyFileSync('.env.local', '.env.local.backup'); if (fs.existsSync('.env.local.local')) fs.copyFileSync('.env.local.local', '.env.local'); console.log('Switched to local Supabase (.env.local.local -> .env.local)');\"",
-    "env:remote": "node -e \"const fs = require('fs'); if (!fs.existsSync('.env.local.backup') && fs.existsSync('.env.local')) fs.copyFileSync('.env.local', '.env.local.backup'); if (fs.existsSync('.env.local.remote')) fs.copyFileSync('.env.local.remote', '.env.local'); console.log('Switched to remote Supabase (.env.local.remote -> .env.local)');\""
+    "env:remote": "node -e \"const fs = require('fs'); if (!fs.existsSync('.env.local.backup') && fs.existsSync('.env.local')) fs.copyFileSync('.env.local', '.env.local.backup'); if (fs.existsSync('.env.local.remote')) fs.copyFileSync('.env.local.remote', '.env.local'); console.log('Switched to remote Supabase (.env.local.remote -> .env.local)');\"",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
+    "@playwright/test": "^1.64.1",
+    "@sentry/nextjs": "^11.10.0",
     "@supabase/ssr": "^0.12.7",
     "@supabase/supabase-js": "^2.118.0",
     "@upstash/ratelimit": "^2.2.0",
@@ -29,6 +34,7 @@
     "cn": "^0.5.0",
     "lucide-react": "^1.61.0",
     "next": "16.4.3",
+    "posthog-js": "^1.442.1",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "server-only": "^0.0.1",

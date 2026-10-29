@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { legalContent } from "@/lib/content/legal";
+import { initPostHogAfterConsent } from "@/components/providers/posthog-provider";
 
 export function CookieConsentBanner() {
     const [visible, setVisible] = useState(false);
@@ -17,6 +18,7 @@ export function CookieConsentBanner() {
     const handleAccept = () => {
         localStorage.setItem("tailor_cookie_consent", "accepted");
         setVisible(false);
+        initPostHogAfterConsent();
     };
 
     if (!visible) return null;
