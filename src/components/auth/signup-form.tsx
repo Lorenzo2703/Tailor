@@ -12,7 +12,6 @@ const { signup, fields } = authContent;
 export function SignupForm({ next }: { next: string }) {
     const [state, action, pending] = useActionState(signUp, initialAuthFormState);
     const errorOf = (name: string) => state.fieldErrors?.[name]?.[0];
-    const selectedType = state.values?.accountType ?? "adopter";
 
     if (state.status === "success") {
         return (
@@ -114,26 +113,6 @@ export function SignupForm({ next }: { next: string }) {
                         </p>
                     )}
                 </div>
-
-                <fieldset className="auth-fieldset">
-                    <legend className="auth-label">{signup.accountTypeLegend}</legend>
-                    {(["adopter", "private"] as const).map((type) => (
-                        <label key={type} className="auth-option">
-                            <input
-                                type="radio"
-                                name="accountType"
-                                value={type}
-                                defaultChecked={selectedType === type}
-                                required
-                            />
-                            <span>
-                                <span className="auth-option-title">{signup.accountTypes[type].label}</span>
-                                <span className="auth-hint">{signup.accountTypes[type].hint}</span>
-                            </span>
-                        </label>
-                    ))}
-                    {errorOf("accountType") ? <p className="auth-field-error">{errorOf("accountType")}</p> : null}
-                </fieldset>
 
                 <div className="auth-field">
                     <label className="auth-option">

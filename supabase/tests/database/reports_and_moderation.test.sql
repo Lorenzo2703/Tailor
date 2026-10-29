@@ -21,10 +21,10 @@ select lives_ok(
 
 -- Check table and RLS existence
 select has_table('public', 'reports', 'public.reports exists');
-select table_has_index('public', 'reports', 'reports_status_idx', 'reports_status_idx index exists');
-select table_has_index('public', 'reports', 'reports_listing_idx', 'reports_listing_idx index exists');
+select has_index('public', 'reports', 'reports_status_idx', 'reports_status_idx index exists');
+select has_index('public', 'reports', 'reports_listing_idx', 'reports_listing_idx index exists');
 select has_function('public', 'admin_resolve_report', ARRAY['uuid', 'public.report_status', 'boolean', 'text'], 'admin_resolve_report exists');
-select function_is_security_definer('public', 'admin_resolve_report', ARRAY['uuid', 'public.report_status', 'boolean', 'text'], 'admin_resolve_report is security definer');
+select is_definer('public', 'admin_resolve_report', 'admin_resolve_report is security definer');
 
 select * from finish();
 rollback;

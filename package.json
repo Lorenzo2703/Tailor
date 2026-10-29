@@ -21,7 +21,8 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "test:e2e:report": "playwright show-report",
-    "db:seed:pilot": "supabase db execute --file supabase/seed_pilot_lazio.sql"
+    "db:seed:pilot": "supabase db execute --file supabase/seed_pilot_lazio.sql",
+    "db:seed:storage": "bash scripts/seed-storage.sh"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

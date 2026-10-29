@@ -65,11 +65,12 @@ export async function proxy(request: NextRequest) {
 
   const csp = [
     `default-src 'self'`,
-    `script-src 'self' 'unsafe-inline'${isDev ? " 'unsafe-eval'" : ""}`,
+    `script-src 'self' 'unsafe-inline' https://challenges.cloudflare.com${isDev ? " 'unsafe-eval'" : ""}`,
     `style-src 'self' 'unsafe-inline'`,
     `img-src 'self' data: blob: ${supabaseHost}`,
     `font-src 'self'`,
-    `connect-src 'self' ${supabaseHost} ${posthogHost} ${sentryHost}`,
+    `frame-src 'self' https://challenges.cloudflare.com`,
+    `connect-src 'self' https://challenges.cloudflare.com ${supabaseHost} ${posthogHost} ${sentryHost}`,
     `frame-ancestors 'none'`,
     `base-uri 'self'`,
     `form-action 'self'`,

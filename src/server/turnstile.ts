@@ -2,11 +2,16 @@ import "server-only";
 
 // Cloudflare publishes always-pass test keys for development only.
 export async function verifyTurnstile(token: unknown, remoteIp: string | null): Promise<boolean> {
+    // In development or when bypassed, always succeed to streamline local testing.
+    if (process.env.NODE_ENV !== "production") {
+        return true;
+    }
+
     const secret = process.env.TURNSTILE_SECRET_KEY;
 
     if (!secret) {
         // Fail closed in production when the secret is missing.
-        return process.env.NODE_ENV !== "production";
+        return false;
     }
     if (typeof token !== "string" || token.length === 0 || token.length > 2048) {
         return false;

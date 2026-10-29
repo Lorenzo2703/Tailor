@@ -21,10 +21,10 @@ select lives_ok(
 
 -- Check table and RLS existence
 select has_table('public', 'favorites', 'public.favorites exists');
-select table_has_index('public', 'favorites', 'favorites_profile_idx', 'favorites_profile_idx index exists');
-select table_has_index('public', 'favorites', 'favorites_listing_idx', 'favorites_listing_idx index exists');
+select has_index('public', 'favorites', 'favorites_profile_idx', 'favorites_profile_idx index exists');
+select has_index('public', 'favorites', 'favorites_listing_idx', 'favorites_listing_idx index exists');
 select has_function('public', 'export_user_data', ARRAY['uuid'], 'export_user_data function exists');
-select function_is_security_definer('public', 'export_user_data', ARRAY['uuid'], 'export_user_data is security definer');
+select is_definer('public', 'export_user_data', 'export_user_data is security definer');
 
 select * from finish();
 rollback;

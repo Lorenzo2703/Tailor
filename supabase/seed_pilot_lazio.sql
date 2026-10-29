@@ -155,17 +155,19 @@ BEGIN
     status = EXCLUDED.status,
     published_at = EXCLUDED.published_at;
 
+  DELETE FROM public.listing_photos WHERE listing_id IN (v_l_luna, v_l_thor, v_l_mia, v_l_rocky, v_l_stella, v_l_oliver, v_l_briciola, v_l_cesare);
+
   -- Foto degli annunci (placeholder con alt text in italiano per accessibilità)
   INSERT INTO public.listing_photos (listing_id, storage_path, position, alt_text)
   VALUES
-    (v_l_luna, 'animals/luna-1.webp', 0, 'Luna, cane bianco pastore maremmano seduta sull''erba guardando verso l''obiettivo'),
-    (v_l_thor, 'animals/thor-1.webp', 0, 'Thor, segugio dal manto fulvo in posa attenta nel cortile del rifugio'),
-    (v_l_mia, 'animals/mia-1.webp', 0, 'Mia, gattina europea tigrata con occhi verdi curiosi mentre gioca'),
-    (v_l_rocky, 'animals/rocky-1.webp', 0, 'Rocky, cane meticcio fulvo e nero con orecchie ritte e sguardo vivace'),
-    (v_l_stella, 'animals/stella-1.webp', 0, 'Stella, setter bianco e nero con pelo setoso in attesa al guinzaglio'),
-    (v_l_oliver, 'animals/oliver-1.webp', 0, 'Oliver, gatto dal fitto pelo grigio disteso comodamente al sole'),
-    (v_l_briciola, 'animals/briciola-1.webp', 0, 'Briciola, piccola cagnolina bianca e crema con musetto vispo'),
-    (v_l_cesare, 'animals/cesare-1.webp', 0, 'Cesare, imponente cane corso tigrato dal portamento nobile')
-  ON CONFLICT (listing_id, position) DO NOTHING;
+    (v_l_luna, v_l_luna || '/luna-1.webp', 0, 'Luna, cane bianco pastore maremmano seduta sull''erba guardando verso l''obiettivo'),
+    (v_l_thor, v_l_thor || '/thor-1.webp', 0, 'Thor, segugio dal manto fulvo in posa attenta nel cortile del rifugio'),
+    (v_l_mia, v_l_mia || '/mia-1.webp', 0, 'Mia, gattina europea tigrata con occhi verdi curiosi mentre gioca'),
+    (v_l_rocky, v_l_rocky || '/rocky-1.webp', 0, 'Rocky, cane meticcio fulvo e nero con orecchie ritte e sguardo vivace'),
+    (v_l_stella, v_l_stella || '/stella-1.webp', 0, 'Stella, setter bianco e nero con pelo setoso in attesa al guinzaglio'),
+    (v_l_oliver, v_l_oliver || '/oliver-1.webp', 0, 'Oliver, gatto dal fitto pelo grigio disteso comodamente al sole'),
+    (v_l_briciola, v_l_briciola || '/briciola-1.webp', 0, 'Briciola, piccola cagnolina bianca e crema con musetto vispo'),
+    (v_l_cesare, v_l_cesare || '/cesare-1.webp', 0, 'Cesare, imponente cane corso tigrato dal portamento nobile')
+  ;
 
 END $$;

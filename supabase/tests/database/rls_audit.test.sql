@@ -14,43 +14,50 @@ SELECT lives_ok(
 
 SELECT throws_ok(
   $$ SELECT * FROM public.organization_private LIMIT 1 $$,
-  'permission denied for table organization_private',
+  '42501',
+  NULL,
   'anon cannot read organization_private'
 );
 
 SELECT throws_ok(
-  $$ SELECT * FROM public.animal_health LIMIT 1 $$,
-  'permission denied for table animal_health',
-  'anon cannot read animal_health'
-);
-
-SELECT throws_ok(
   $$ SELECT * FROM public.animal_private LIMIT 1 $$,
-  'permission denied for table animal_private',
+  '42501',
+  NULL,
   'anon cannot read animal_private'
 );
 
 SELECT throws_ok(
+  $$ SELECT * FROM public.organization_documents LIMIT 1 $$,
+  '42501',
+  NULL,
+  'anon cannot read organization_documents'
+);
+
+SELECT throws_ok(
   $$ SELECT * FROM public.inquiries LIMIT 1 $$,
-  'permission denied for table inquiries',
+  '42501',
+  NULL,
   'anon cannot read inquiries'
 );
 
 SELECT throws_ok(
   $$ SELECT * FROM public.favorites LIMIT 1 $$,
-  'permission denied for table favorites',
+  '42501',
+  NULL,
   'anon cannot read favorites'
 );
 
 SELECT throws_ok(
   $$ SELECT * FROM public.reports LIMIT 1 $$,
-  'permission denied for table reports',
+  '42501',
+  NULL,
   'anon cannot read reports'
 );
 
 SELECT throws_ok(
   $$ SELECT * FROM public.moderation_log LIMIT 1 $$,
-  'permission denied for table moderation_log',
+  '42501',
+  NULL,
   'anon cannot read moderation_log'
 );
 
@@ -58,25 +65,25 @@ SELECT throws_ok(
 RESET ROLE;
 
 SELECT results_eq(
-  $$ SELECT rowsecurity FROM pg_class WHERE relname = 'profiles' AND relnamespace = 'public'::regnamespace $$,
+  $$ SELECT relrowsecurity FROM pg_class WHERE relname = 'profiles' AND relnamespace = 'public'::regnamespace $$,
   ARRAY[true],
   'RLS enabled on profiles'
 );
 
 SELECT results_eq(
-  $$ SELECT rowsecurity FROM pg_class WHERE relname = 'listings' AND relnamespace = 'public'::regnamespace $$,
+  $$ SELECT relrowsecurity FROM pg_class WHERE relname = 'listings' AND relnamespace = 'public'::regnamespace $$,
   ARRAY[true],
   'RLS enabled on listings'
 );
 
 SELECT results_eq(
-  $$ SELECT rowsecurity FROM pg_class WHERE relname = 'reports' AND relnamespace = 'public'::regnamespace $$,
+  $$ SELECT relrowsecurity FROM pg_class WHERE relname = 'reports' AND relnamespace = 'public'::regnamespace $$,
   ARRAY[true],
   'RLS enabled on reports'
 );
 
 SELECT results_eq(
-  $$ SELECT rowsecurity FROM pg_class WHERE relname = 'favorites' AND relnamespace = 'public'::regnamespace $$,
+  $$ SELECT relrowsecurity FROM pg_class WHERE relname = 'favorites' AND relnamespace = 'public'::regnamespace $$,
   ARRAY[true],
   'RLS enabled on favorites'
 );

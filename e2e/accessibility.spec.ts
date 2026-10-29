@@ -8,10 +8,7 @@ import { test, expect } from "@playwright/test";
 test.describe("Accessibility — public shell", () => {
   test("has a visible skip-to-content link on focus", async ({ page }) => {
     await page.goto("/");
-    // Tab once to find skip link
-    await page.keyboard.press("Tab");
     const skipLink = page.locator("a[href='#main-content']");
-    // Skip link should exist (may be sr-only until focused)
     await expect(skipLink).toHaveCount(1);
   });
 
@@ -19,11 +16,11 @@ test.describe("Accessibility — public shell", () => {
     await page.goto("/");
     const navLinks = page.locator("nav a");
     const count = await navLinks.count();
+    expect(count).toBeGreaterThan(0);
     for (let i = 0; i < count; i++) {
       const link = navLinks.nth(i);
       const text = await link.textContent();
       const ariaLabel = await link.getAttribute("aria-label");
-      // Must have either visible text or aria-label
       expect((text?.trim() ?? "") + (ariaLabel ?? "")).not.toBe("");
     }
   });
@@ -43,6 +40,7 @@ test.describe("Responsive layout", () => {
   test("mobile nav is accessible", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto("/");
+    await expect(page.locator("header")).toBeVisible();
     await expect(page.locator("nav")).toBeVisible();
   });
 });

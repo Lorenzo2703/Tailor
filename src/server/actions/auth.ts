@@ -36,19 +36,17 @@ export async function signUp(prev: AuthFormState, formData: FormData): Promise<A
     const values = {
         email: text(formData.get("email")),
         displayName: text(formData.get("displayName")),
-        accountType: text(formData.get("accountType")),
     };
     const parsed = signupSchema.safeParse({
         email: formData.get("email"),
         password: formData.get("password"),
         displayName: formData.get("displayName"),
-        accountType: formData.get("accountType"),
         acceptTerms: formData.get("acceptTerms"),
     });
     if (!parsed.success) {
         return fail(prev, errors.generic, z.flattenError(parsed.error).fieldErrors, values);
     }
-    const { email, password, displayName, accountType } = parsed.data;
+    const { email, password, displayName } = parsed.data;
 
     const ip = await getClientIp();
     const allowed =
@@ -70,7 +68,6 @@ export async function signUp(prev: AuthFormState, formData: FormData): Promise<A
             emailRedirectTo: `${getSiteUrl()}/auth/callback`,
             data: {
                 display_name: displayName,
-                account_type: accountType,
                 terms_accepted_at: new Date().toISOString(),
             },
         },

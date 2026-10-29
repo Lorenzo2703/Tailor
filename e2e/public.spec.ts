@@ -9,7 +9,6 @@ test.describe("Home page", () => {
   test("loads and shows adoption headline", async ({ page }) => {
     await page.goto("/");
     await expect(page).toHaveTitle(/Tailor/i);
-    // Must have a main landmark
     await expect(page.locator("main")).toBeVisible();
   });
 });
@@ -18,14 +17,13 @@ test.describe("Animal discovery", () => {
   test("shows animal listings", async ({ page }) => {
     await page.goto("/animals");
     await expect(page).toHaveTitle(/Tailor/i);
-    // Page renders without error
     await expect(page.locator("main")).toBeVisible();
   });
 });
 
 test.describe("Shelter directory", () => {
-  test("renders shelter list", async ({ page }) => {
-    await page.goto("/shelters");
+  test("renders shelter detail page", async ({ page }) => {
+    await page.goto("/shelters/rifugio-muratella");
     await expect(page.locator("main")).toBeVisible();
   });
 });
@@ -49,21 +47,26 @@ test.describe("Legal pages", () => {
 
 test.describe("Cookie consent banner", () => {
   test("shows on first visit and hides after accept", async ({ page }) => {
-    // Clear localStorage to simulate first visit
+    // Navigate with clean state
     await page.goto("/");
-    await page.evaluate(() => localStorage.removeItem("tailor_cookie_consent"));
+    await page.evaluate(() => {
+      window.localStorage.removeItem("tailor_cookie_consent");
+    });
+    // Reload so component mounts with clean localStorage
     await page.reload();
 
-    const banner = page.getByRole("complementary", {
-      name: /cookie/i,
-    });
-    await expect(banner).toBeVisible();
+    const banner = page.locator("aside[aria-label='Informativa Cookie']");
+    await expect(banner).toBeVisible({ timeout: 5000 });
 
-    // Accept
-    await page.getByRole("button", { name: /accetto|accetta/i }).click();
+    // Click accept button ("Ho capito" is the actual button text)
+    await banner.getByRole("button", { name: /ho capito/i }).click();
     await expect(banner).not.toBeVisible();
 
-    // Persists after reload
+    // Verify localStorage has been set
+    const consent = await page.evaluate(() => window.localStorage.getItem("tailor_cookie_consent"));
+    expect(consent).toBe("accepted");
+
+    // Reloading the page should keep the banner hidden
     await page.reload();
     await expect(banner).not.toBeVisible();
   });

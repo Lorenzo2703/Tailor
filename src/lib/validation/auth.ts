@@ -31,6 +31,5 @@ export const signupSchema = z.object({
         .trim()
         .min(2, errors.displayName)
         .max(80, errors.displayName),
-    accountType: z.enum(["adopter", "private"], { error: errors.accountType }),
     acceptTerms: z.literal("on", { error: errors.terms }),
 });

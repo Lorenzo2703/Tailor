@@ -5,7 +5,6 @@ const validSignup = {
     email: "  Persona@Example.TEST ",
     password: "abcdef12",
     displayName: "  Anna  ",
-    accountType: "adopter",
     acceptTerms: "on",
 };
 
@@ -22,13 +21,6 @@ describe("signupSchema", () => {
     it("rejects passwords without letters or digits, or too short/long", () => {
         for (const password of ["abcdefgh", "12345678", "a1", `a1${"x".repeat(80)}`]) {
             expect(signupSchema.safeParse({ ...validSignup, password }).success).toBe(false);
-        }
-    });
-
-    it("only allows self-service account types", () => {
-        expect(signupSchema.safeParse({ ...validSignup, accountType: "private" }).success).toBe(true);
-        for (const accountType of ["admin", "shelter_member", ""]) {
-            expect(signupSchema.safeParse({ ...validSignup, accountType }).success).toBe(false);
         }
     });
 
