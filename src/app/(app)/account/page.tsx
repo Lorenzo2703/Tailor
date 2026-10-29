@@ -42,6 +42,22 @@ export default async function AccountPage() {
                 </div>
             </dl>
 
+            {role === "admin" ? (
+                <section aria-labelledby="admin-title" style={{ marginTop: "1.5rem" }}>
+                    <h2 id="admin-title" className="auth-section-title">
+                        Pannello Amministrazione
+                    </h2>
+                    <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginTop: "0.75rem" }}>
+                        <Link className="auth-button" href="/admin/verifications" style={{ textDecoration: "none" }}>
+                            Verifica Rifugi ed Enti
+                        </Link>
+                        <Link className="auth-button" href="/admin/reports" data-variant="secondary" style={{ textDecoration: "none" }}>
+                            Segnalazioni e Moderazione
+                        </Link>
+                    </div>
+                </section>
+            ) : null}
+
             <section aria-labelledby="orgs-title">
                 <h2 id="orgs-title" className="auth-section-title">
                     {orgCopy.organizations}
