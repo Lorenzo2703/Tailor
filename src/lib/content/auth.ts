@@ -1,0 +1,77 @@
+export const authContent = {
+    brand: "Tailor",
+    login: {
+        title: "Accedi",
+        description: "Entra nel tuo account per gestire preferiti, richieste e annunci.",
+        submit: "Accedi",
+        submitting: "Accesso in corso…",
+        noAccount: "Non hai un account?",
+        noAccountLink: "Registrati",
+    },
+    signup: {
+        title: "Crea il tuo account",
+        description: "Bastano pochi dati. Ti invieremo un'email per confermare il tuo indirizzo.",
+        submit: "Registrati",
+        submitting: "Registrazione in corso…",
+        haveAccount: "Hai già un account?",
+        haveAccountLink: "Accedi",
+        accountTypeLegend: "Cosa vuoi fare?",
+        accountTypes: {
+            adopter: {
+                label: "Cerco un animale da adottare",
+                hint: "Puoi salvare i preferiti e contattare rifugi e privati.",
+            },
+            private: {
+                label: "Devo affidare un mio animale",
+                hint: "Potrai creare un annuncio di affido gratuito.",
+            },
+        },
+        terms:
+            "Accetto i Termini di servizio e l'Informativa sulla privacy (documenti in fase di revisione legale).",
+        checkEmailTitle: "Controlla la tua email",
+        checkEmailBody:
+            "Se l'indirizzo è valido, abbiamo inviato un link per confermare l'account. Controlla anche la cartella spam.",
+    },
+    fields: {
+        email: "Email",
+        password: "Password",
+        passwordHint: "Almeno 8 caratteri, con lettere e numeri.",
+        displayName: "Come ti chiami?",
+        displayNameHint: "Il nome che vedranno gli altri utenti.",
+    },
+    google: {
+        divider: "oppure",
+        button: "Continua con Google",
+    },
+    account: {
+        title: "Il tuo account",
+        email: "Email",
+        name: "Nome",
+        type: "Tipo di account",
+        noName: "Non impostato",
+        signOut: "Esci",
+        backToApp: "Torna alla demo",
+        roles: {
+            adopter: "Adottante",
+            private: "Privato che affida un animale",
+            shelter_member: "Rifugio o associazione",
+            admin: "Amministratore",
+        },
+    },
+    errors: {
+        generic: "Qualcosa è andato storto. Riprova tra qualche istante.",
+        invalidCredentials: "Email o password non corretti.",
+        emailNotConfirmed: "Conferma prima il tuo indirizzo email: controlla la tua casella di posta.",
+        weakPassword: "La password è troppo debole. Usa almeno 8 caratteri con lettere e numeri.",
+        captcha: "Verifica di sicurezza non superata. Riprova.",
+        rateLimited: "Troppi tentativi. Riprova tra qualche minuto.",
+        callback: "Il link non è valido o è scaduto. Prova ad accedere di nuovo.",
+        google: "Accesso con Google non disponibile al momento.",
+        required: "Compila questo campo.",
+        invalidEmail: "Inserisci un indirizzo email valido.",
+        passwordShape: "Almeno 8 caratteri, con lettere e numeri.",
+        displayName: "Inserisci un nome di almeno 2 caratteri.",
+        terms: "Per registrarti devi accettare i documenti.",
+        accountType: "Scegli un'opzione.",
+    },
+} as const;
