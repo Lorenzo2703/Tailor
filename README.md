@@ -154,10 +154,52 @@ Open [http://localhost:3000](http://localhost:3000) in your browser.
 | `npm run start` | Starts production server |
 | `npm run lint` | Runs ESLint check across all files |
 | `npm run test` | Runs unit and validation tests via Vitest |
+| `npm run env:local` | Switches `.env.local` to point to local WSL/Docker Supabase |
+| `npm run env:remote` | Switches `.env.local` to point to online Supabase project |
 | `npm run db:start` | Boots local Supabase Docker containers (Postgres, Studio, Storage, Inbucket) |
 | `npm run db:stop` | Stops local Supabase containers |
 | `npm run db:status` | Displays connection details and keys for local Supabase |
 | `npm run db:types` | Regenerates `src/lib/supabase/database.types.ts` from local database schema |
+| `npm run db:types:remote` | Regenerates TypeScript types from linked remote Supabase project |
+| `npm run db:link` | Links Supabase CLI to your remote project (`supabase link --project-ref <id>`) |
+| `npm run db:push` | Pushes local migrations to remote Supabase database |
+| `npm run db:pull` | Pulls remote schema changes into local migrations |
+
+---
+
+## 🔄 Switching Between Local (WSL / Docker) and Remote (Cloud) Supabase
+
+You can easily toggle between your local Dockerized Supabase running in WSL and an online Supabase project:
+
+### 1. Initial Setup
+Create two environment profile files (both are git-ignored):
+- **`.env.local.local`**: Copy from `.env.local.example` and insert keys from `npm run db:status` (WSL / Docker).
+- **`.env.local.remote`**: Copy from `.env.remote.example` and insert keys from your Supabase Cloud Dashboard (**Settings -> API**).
+
+### 2. Switch with one command
+```bash
+# Switch to Local WSL/Docker Supabase:
+npm run env:local
+
+# Switch to Online Supabase:
+npm run env:remote
+```
+
+### 3. Syncing Migrations to Remote Supabase
+When you want to deploy local migrations to your online Supabase instance:
+```bash
+# 1. Login to Supabase CLI (if not already logged in)
+npx supabase login
+
+# 2. Link your remote project
+npx supabase link --project-ref <your-project-ref>
+
+# 3. Push your migrations
+npm run db:push
+
+# 4. Generate types from remote
+npm run db:types:remote
+```
 
 ---
 

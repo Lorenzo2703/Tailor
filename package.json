@@ -11,7 +11,13 @@
     "db:start": "supabase start",
     "db:stop": "supabase stop",
     "db:status": "supabase status",
-    "db:types": "supabase gen types typescript --local > src/lib/supabase/database.types.ts"
+    "db:types": "supabase gen types typescript --local > src/lib/supabase/database.types.ts",
+    "db:types:remote": "supabase gen types typescript --linked > src/lib/supabase/database.types.ts",
+    "db:link": "supabase link",
+    "db:push": "supabase db push",
+    "db:pull": "supabase db pull",
+    "env:local": "node -e \"const fs = require('fs'); if (!fs.existsSync('.env.local.backup') && fs.existsSync('.env.local')) fs.copyFileSync('.env.local', '.env.local.backup'); if (fs.existsSync('.env.local.local')) fs.copyFileSync('.env.local.local', '.env.local'); console.log('Switched to local Supabase (.env.local.local -> .env.local)');\"",
+    "env:remote": "node -e \"const fs = require('fs'); if (!fs.existsSync('.env.local.backup') && fs.existsSync('.env.local')) fs.copyFileSync('.env.local', '.env.local.backup'); if (fs.existsSync('.env.local.remote')) fs.copyFileSync('.env.local.remote', '.env.local'); console.log('Switched to remote Supabase (.env.local.remote -> .env.local)');\""
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",
