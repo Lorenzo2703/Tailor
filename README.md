@@ -234,11 +234,11 @@ The project follows sequential milestone delivery:
 - [x] **Milestone 7 — Organization & Shelter Onboarding**: Shelter verification flow, document submission, admin moderation dashboard.
 - [x] **Milestone 8 — Listing Creation**: Multi-step animal listing form, photo upload, draft saving, compliance checks.
 - [x] **Milestone 9 — Public Discovery & Search**: Listing grid, filters, PostGIS location radius search, animal & shelter detail pages, SEO metadata.
-- [ ] **Milestone 10 — Inquiries & Messaging**: Contact forms, in-app inquiry threads, Resend email notifications, anti-spam safeguards.
-- [ ] **Milestone 11 — Favorites & User Portal**: Saved listings, "My Animals" management dashboard, GDPR data export & deletion.
-- [ ] **Milestone 12 — Moderation & Reporting**: Report flows, takedown capabilities, append-only `moderation_log`.
-- [ ] **Milestone 13 — Legal, Privacy & Compliance**: Finalize Terms of Service, Privacy Policy, Cookie banner, scam prevention guides.
-- [ ] **Milestone 14 — Hardening & Production Readiness**: Full RLS audit, end-to-end tests (Playwright), Sentry & PostHog telemetry.
+- [x] **Milestone 10 — Inquiries & Messaging**: Contact forms, in-app inquiry threads, Resend email notifications, anti-spam safeguards.
+- [x] **Milestone 11 — Favorites & User Portal**: Saved listings, "My Animals" management dashboard, GDPR data export & deletion.
+- [x] **Milestone 12 — Moderation & Reporting**: Report flows, takedown capabilities, append-only `moderation_log`.
+- [x] **Milestone 13 — Legal, Privacy & Compliance**: Finalize Terms of Service, Privacy Policy, Cookie banner, scam prevention guides.
+- [x] **Milestone 14 — Hardening & Production Readiness**: Full RLS audit, end-to-end tests (Playwright), Sentry & PostHog telemetry.
 - [ ] **Milestone 15 — Staging Pilot**: Pilot onboarding with 3–5 partner shelters in Lazio.
 
 ---
