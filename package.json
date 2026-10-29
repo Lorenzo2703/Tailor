@@ -20,7 +20,8 @@
     "env:remote": "node -e \"const fs = require('fs'); if (!fs.existsSync('.env.local.backup') && fs.existsSync('.env.local')) fs.copyFileSync('.env.local', '.env.local.backup'); if (fs.existsSync('.env.local.remote')) fs.copyFileSync('.env.local.remote', '.env.local'); console.log('Switched to remote Supabase (.env.local.remote -> .env.local)');\"",
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
-    "test:e2e:report": "playwright show-report"
+    "test:e2e:report": "playwright show-report",
+    "db:seed:pilot": "supabase db execute --file supabase/seed_pilot_lazio.sql"
   },
   "dependencies": {
     "@base-ui/react": "^1.9.0",

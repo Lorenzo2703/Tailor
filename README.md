@@ -239,7 +239,7 @@ The project follows sequential milestone delivery:
 - [x] **Milestone 12 — Moderation & Reporting**: Report flows, takedown capabilities, append-only `moderation_log`.
 - [x] **Milestone 13 — Legal, Privacy & Compliance**: Finalize Terms of Service, Privacy Policy, Cookie banner, scam prevention guides.
 - [x] **Milestone 14 — Hardening & Production Readiness**: Full RLS audit, end-to-end tests (Playwright), Sentry & PostHog telemetry.
-- [ ] **Milestone 15 — Staging Pilot**: Pilot onboarding with 3–5 partner shelters in Lazio.
+- [x] **Milestone 15 — Staging Pilot**: Pilot onboarding with 3–5 partner shelters in Lazio (see [Pilot Onboarding Guide](docs/PILOT_ONBOARDING.md) and [Deployment Guide](docs/DEPLOYMENT.md)).
 
 ---
 
