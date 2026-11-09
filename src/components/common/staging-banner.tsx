@@ -22,10 +22,10 @@ export function StagingBanner() {
   return (
     <aside
       aria-label="Avviso ambiente di staging"
-      className="bg-amber-500 text-amber-950 px-4 py-2 text-xs sm:text-sm font-medium border-b border-amber-600 shadow-xs relative z-50 flex items-center justify-between"
+      className="staging-banner"
     >
-      <div className="mx-auto flex items-center gap-2 text-center">
-        <AlertTriangle className="h-4 w-4 shrink-0 text-amber-950" aria-hidden="true" />
+      <div className="staging-banner-content">
+        <AlertTriangle aria-hidden="true" />
         <span>
           <strong>Ambiente Pilota / Staging:</strong> I profili e gli annunci inseriti sono a scopo di test e non rappresentano adozioni reali.
         </span>
@@ -33,7 +33,7 @@ export function StagingBanner() {
           href="https://github.com/Lorenzo2703/Tailor/issues"
           target="_blank"
           rel="noopener noreferrer"
-          className="underline font-semibold hover:text-amber-900 ml-1"
+          className="staging-banner-link"
         >
           Segnala feedback
         </a>
@@ -41,10 +41,10 @@ export function StagingBanner() {
       <button
         type="button"
         onClick={() => setDismissed(true)}
-        className="p-1 text-amber-950 hover:bg-amber-600/30 rounded-md transition-colors"
+        className="staging-banner-close"
         aria-label="Chiudi avviso staging"
       >
-        <X className="h-4 w-4" />
+        <X aria-hidden="true" />
       </button>
     </aside>
   );

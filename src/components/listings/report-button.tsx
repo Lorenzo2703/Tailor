@@ -50,50 +50,52 @@ export function ReportButton({ listingId, className = "" }: ReportButtonProps) {
             <button
                 type="button"
                 onClick={() => setIsOpen(true)}
-                className={`inline-flex items-center gap-1.5 text-xs text-neutral-500 hover:text-red-600 ${className}`}
+                className={`listing-report-button ${className}`}
+                aria-haspopup="dialog"
+                aria-expanded={isOpen}
             >
-                <Flag className="h-3.5 w-3.5" />
+                <Flag size={16} aria-hidden="true" />
                 <span>{modal.triggerButton}</span>
             </button>
 
             {isOpen && (
                 <div
-                    className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-xs"
+                    className="listing-report-overlay"
                     role="dialog"
                     aria-modal="true"
                     aria-labelledby="report-modal-title"
                 >
-                    <div className="relative w-full max-w-md rounded-2xl bg-white p-6 shadow-xl">
+                    <div className="listing-report-panel">
                         <button
                             type="button"
                             onClick={() => setIsOpen(false)}
                             aria-label="Chiudi finestra"
-                            className="absolute top-4 right-4 text-neutral-400 hover:text-neutral-600"
+                            className="listing-report-close"
                         >
                             <X className="h-5 w-5" />
                         </button>
 
-                        <h2 id="report-modal-title" className="text-lg font-bold text-neutral-900">
+                        <h2 id="report-modal-title" className="auth-title">
                             {modal.title}
                         </h2>
-                        <p className="mt-1 text-xs text-neutral-600">{modal.subtitle}</p>
+                        <p className="auth-hint">{modal.subtitle}</p>
 
                         {success ? (
-                            <div className="mt-4 rounded-lg bg-emerald-50 p-4 text-sm text-emerald-800">
+                            <div className="auth-alert" data-tone="success">
                                 {modal.success}
                             </div>
                         ) : (
-                            <form onSubmit={handleSubmit} className="mt-4 space-y-4">
+                            <form onSubmit={handleSubmit} className="auth-form">
                                 {error && (
-                                    <div className="rounded-lg bg-red-50 p-3 text-xs text-red-700">
+                                    <div className="auth-alert" role="alert">
                                         {error}
                                     </div>
                                 )}
 
-                                <div>
+                                <div className="auth-field">
                                     <label
                                         htmlFor="report-reason"
-                                        className="block text-xs font-semibold text-neutral-700"
+                                        className="auth-label"
                                     >
                                         {modal.reasonLabel}
                                     </label>
@@ -101,7 +103,7 @@ export function ReportButton({ listingId, className = "" }: ReportButtonProps) {
                                         id="report-reason"
                                         value={reason}
                                         onChange={(e) => setReason(e.target.value as ReportReason)}
-                                        className="mt-1 block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+                                        className="auth-input"
                                     >
                                         {reportReasons.map((key) => (
                                             <option key={key} value={key}>
@@ -111,10 +113,10 @@ export function ReportButton({ listingId, className = "" }: ReportButtonProps) {
                                     </select>
                                 </div>
 
-                                <div>
+                                <div className="auth-field">
                                     <label
                                         htmlFor="report-details"
-                                        className="block text-xs font-semibold text-neutral-700"
+                                        className="auth-label"
                                     >
                                         {modal.detailsLabel}
                                     </label>
@@ -124,22 +126,23 @@ export function ReportButton({ listingId, className = "" }: ReportButtonProps) {
                                         value={details}
                                         onChange={(e) => setDetails(e.target.value)}
                                         placeholder={modal.detailsPlaceholder}
-                                        className="mt-1 block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+                                        className="auth-input"
                                     />
                                 </div>
 
-                                <div className="mt-5 flex justify-end gap-2">
+                                <div className="listing-report-actions">
                                     <button
                                         type="button"
                                         onClick={() => setIsOpen(false)}
-                                        className="rounded-lg border border-neutral-300 px-3.5 py-2 text-xs font-medium text-neutral-700 hover:bg-neutral-50"
+                                        className="auth-button"
+                                        data-variant="secondary"
                                     >
                                         {modal.cancelButton}
                                     </button>
                                     <button
                                         type="submit"
                                         disabled={isPending || details.trim().length < 10}
-                                        className="inline-flex items-center rounded-lg bg-red-600 px-3.5 py-2 text-xs font-medium text-white shadow-2xs hover:bg-red-700 disabled:opacity-50"
+                                        className="auth-button"
                                     >
                                         {isPending ? "Invio in corso..." : modal.submitButton}
                                     </button>

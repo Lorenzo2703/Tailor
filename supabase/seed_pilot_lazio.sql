@@ -161,6 +161,8 @@ BEGIN
   INSERT INTO public.listing_photos (listing_id, storage_path, position, alt_text)
   VALUES
     (v_l_luna, v_l_luna || '/luna-1.webp', 0, 'Luna, cane bianco pastore maremmano seduta sull''erba guardando verso l''obiettivo'),
+    (v_l_luna, v_l_luna || '/luna-2.webp', 1, 'Foto dimostrativa di un cane per provare il carosello di Luna'),
+    (v_l_luna, v_l_luna || '/luna-3.webp', 2, 'Altra foto dimostrativa di un cane per provare il carosello di Luna'),
     (v_l_thor, v_l_thor || '/thor-1.webp', 0, 'Thor, segugio dal manto fulvo in posa attenta nel cortile del rifugio'),
     (v_l_mia, v_l_mia || '/mia-1.webp', 0, 'Mia, gattina europea tigrata con occhi verdi curiosi mentre gioca'),
     (v_l_rocky, v_l_rocky || '/rocky-1.webp', 0, 'Rocky, cane meticcio fulvo e nero con orecchie ritte e sguardo vivace'),

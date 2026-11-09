@@ -50,39 +50,37 @@ export function AccountGdprSection() {
     const { gdpr } = favoritesContent;
 
     return (
-        <section aria-labelledby="gdpr-heading" className="mt-10 border-t border-neutral-200 pt-8">
-            <h2 id="gdpr-heading" className="text-lg font-bold text-neutral-900">
+        <section aria-labelledby="gdpr-heading" className="account-gdpr">
+            <h2 id="gdpr-heading" className="account-section-title">
                 Privacy & Gestione Dati (GDPR)
             </h2>
 
             {error && (
-                <div className="mt-4 rounded-lg bg-red-50 p-3 text-sm text-red-700" role="alert">
+                <div className="account-gdpr-error" role="alert">
                     {error}
                 </div>
             )}
 
-            {/* Export */}
-            <div className="mt-6 rounded-xl border border-neutral-200 bg-neutral-50/50 p-5">
-                <h3 className="font-semibold text-neutral-900">{gdpr.exportTitle}</h3>
-                <p className="mt-1 text-sm text-neutral-600">{gdpr.exportDescription}</p>
+            <div className="account-gdpr-card">
+                <h3>{gdpr.exportTitle}</h3>
+                <p>{gdpr.exportDescription}</p>
                 <button
                     type="button"
                     onClick={handleExport}
                     disabled={isExporting}
-                    className="mt-4 inline-flex items-center rounded-lg border border-neutral-300 bg-white px-3.5 py-2 text-sm font-medium text-neutral-700 shadow-2xs hover:bg-neutral-50 disabled:opacity-50"
+                    className="account-gdpr-button"
                 >
                     {isExporting ? "Generazione archivio..." : gdpr.exportButton}
                 </button>
             </div>
 
-            {/* Delete Account */}
-            <div className="mt-6 rounded-xl border border-red-200 bg-red-50/30 p-5">
-                <h3 className="font-semibold text-red-900">{gdpr.deleteTitle}</h3>
-                <p className="mt-1 text-sm text-red-800">{gdpr.deleteDescription}</p>
-                <p className="mt-2 text-xs font-semibold text-red-700">{gdpr.deleteWarning}</p>
+            <div className="account-gdpr-card" data-tone="danger">
+                <h3>{gdpr.deleteTitle}</h3>
+                <p>{gdpr.deleteDescription}</p>
+                <p className="account-gdpr-warning">{gdpr.deleteWarning}</p>
 
-                <form onSubmit={handleDelete} className="mt-4 max-w-sm space-y-3">
-                    <label htmlFor="confirm-del" className="block text-xs font-medium text-neutral-700">
+                <form onSubmit={handleDelete} className="account-gdpr-delete-form">
+                    <label htmlFor="confirm-del">
                         {gdpr.deleteConfirmationPrompt}
                     </label>
                     <input
@@ -91,12 +89,12 @@ export function AccountGdprSection() {
                         value={confirmation}
                         onChange={(e) => setConfirmation(e.target.value)}
                         placeholder="ELIMINA"
-                        className="block w-full rounded-lg border border-neutral-300 bg-white px-3 py-2 text-sm text-neutral-900 shadow-2xs focus:border-red-500 focus:outline-none focus:ring-1 focus:ring-red-500"
+                        className="account-gdpr-input"
                     />
                     <button
                         type="submit"
                         disabled={confirmation !== "ELIMINA" || isDeleting}
-                        className="inline-flex items-center rounded-lg bg-red-600 px-3.5 py-2 text-sm font-medium text-white shadow-2xs hover:bg-red-700 disabled:opacity-40"
+                        className="account-gdpr-delete-button"
                     >
                         {isDeleting ? "Eliminazione..." : gdpr.deleteButton}
                     </button>

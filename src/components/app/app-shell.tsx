@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Info, PawPrint } from "lucide-react";
 import { AppNav } from "@/components/app/app-nav";
 import { ServiceWorkerRegistration } from "@/components/app/service-worker-registration";
+import { ThemeToggle } from "@/components/common/theme-toggle";
 
 export function AppShell({ children }: { children: ReactNode }) {
   return (
@@ -17,7 +18,11 @@ export function AppShell({ children }: { children: ReactNode }) {
           </span>
           <span>Tailor</span>
         </Link>
-        <span className="app-header-tag">PROTOTIPO</span>
+        <div className="app-header-actions">
+          <AppNav />
+          <span className="app-header-tag">PROTOTIPO</span>
+          <ThemeToggle />
+        </div>
       </header>
 
       <aside className="demo-banner" role="note">
@@ -31,7 +36,6 @@ export function AppShell({ children }: { children: ReactNode }) {
         {children}
       </main>
 
-      <AppNav />
       <ServiceWorkerRegistration />
     </div>
   );

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { UserRound } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { publicContent } from "@/lib/content/public";
 
@@ -28,18 +29,20 @@ export function NavAuthLink() {
         };
     }, []);
 
-    // During SSR and initial load, render a clean link to /account
+    const renderAccountLink = (href: string, label: string) => (
+        <Link href={href} className="public-nav-account" aria-label={label} title={label}>
+            <UserRound aria-hidden="true" />
+        </Link>
+    );
+
+    // During SSR and initial load, render an accessible icon link to the account.
     if (isAuthenticated === null) {
-        return <Link href="/account">{publicContent.nav.login}</Link>;
+        return renderAccountLink("/account", publicContent.nav.login);
     }
 
     if (isAuthenticated) {
-        return (
-            <Link href="/account" className="font-medium text-emerald-700">
-                {publicContent.nav.account}
-            </Link>
-        );
+        return renderAccountLink("/account", publicContent.nav.account);
     }
 
-    return <Link href="/login">{publicContent.nav.login}</Link>;
+    return renderAccountLink("/login", publicContent.nav.login);
 }

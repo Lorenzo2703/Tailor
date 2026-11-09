@@ -29,6 +29,26 @@ export type SearchFilters = {
 
 // Everything below is public data fetched without cookies, so it is safe to cache and share.
 
+async function withListingPhotos<T extends { listing_id: string | null }>(rows: T[]) {
+    const ids = rows.flatMap((row) => row.listing_id ? [row.listing_id] : []);
+    if (ids.length === 0) return rows.map((row) => ({ ...row, photos: [] }));
+
+    const { data, error } = await createAnonClient()
+        .from("listing_photos")
+        .select("id, listing_id, alt_text")
+        .in("listing_id", ids)
+        .order("position", { ascending: true });
+    if (error) throw new Error("Public listing photos query failed", { cause: error });
+
+    const grouped = new Map<string, { id: string; alt_text: string }[]>();
+    for (const photo of data ?? []) {
+        const photos = grouped.get(photo.listing_id) ?? [];
+        photos.push({ id: photo.id, alt_text: photo.alt_text });
+        grouped.set(photo.listing_id, photos);
+    }
+    return rows.map((row) => ({ ...row, photos: row.listing_id ? grouped.get(row.listing_id) ?? [] : [] }));
+}
+
 export async function searchPublicListings(filters: SearchFilters) {
     "use cache";
     cacheTag("listings");
@@ -54,7 +74,7 @@ export async function searchPublicListings(filters: SearchFilters) {
         throw new Error("search_listings failed");
     }
 
-    const rows = (data ?? []).map(withAge);
+    const rows = await withListingPhotos((data ?? []).map(withAge));
     return { rows, total: Number(rows[0]?.total_count ?? 0) };
 }
 
@@ -121,7 +141,7 @@ export async function getPublicOrganization(slug: string) {
         .order("published_at", { ascending: false })
         .limit(48);
 
-    return { organization, listings: (listings ?? []).map(withAge) };
+    return { organization, listings: await withListingPhotos((listings ?? []).map(withAge)) };
 }
 
 export async function getSitemapEntries() {

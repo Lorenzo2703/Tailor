@@ -1,6 +1,6 @@
-import Image from "next/image";
 import Link from "next/link";
 import { publicContent } from "@/lib/content/public";
+import { ListingPhotoCarousel } from "@/components/public/listing-photo-carousel";
 
 type CardData = {
     slug: string | null;
@@ -15,6 +15,7 @@ type CardData = {
     listing_type: "adoption" | "gift" | null;
     cover_photo_id: string | null;
     cover_photo_alt: string | null;
+    photos: { id: string; alt_text: string }[];
     distance_km?: number | null;
 };
 
@@ -26,19 +27,9 @@ export function ListingCard({ item, priority = false }: { item: CardData; priori
 
     return (
         <li>
-            <Link className="pub-card" href={`/animals/${item.slug}`}>
-                <div className="pub-card-media">
-                    {item.cover_photo_id ? (
-                        <Image
-                            src={`/media/${item.cover_photo_id}`}
-                            alt={item.cover_photo_alt ?? `${copy.detail.photosLabel} ${item.name}`}
-                            fill
-                            sizes="(min-width: 62rem) 18rem, (min-width: 40rem) 45vw, 92vw"
-                            priority={priority}
-                        />
-                    ) : null}
-                </div>
-                <div className="pub-card-body">
+            <article className="pub-card">
+                <ListingPhotoCarousel photos={item.photos} name={item.name} href={`/animals/${item.slug}`} priority={priority} />
+                <Link className="pub-card-body" href={`/animals/${item.slug}`}>
                     <h3>{item.name}</h3>
                     <p className="pub-meta">
                         {copy.species[item.species]}
@@ -54,8 +45,8 @@ export function ListingCard({ item, priority = false }: { item: CardData; priori
                         {item.listing_type ? ` · ${copy.card[item.listing_type]}` : ""}
                         {item.listing_status === "reserved" ? ` · ${copy.card.reserved}` : ""}
                     </p>
-                </div>
-            </Link>
+                </Link>
+            </article>
         </li>
     );
 }

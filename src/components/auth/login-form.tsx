@@ -14,7 +14,7 @@ export function LoginForm({ next }: { next: string }) {
 
     return (
         <>
-            <form action={action} className="auth-form" noValidate>
+            <form action={action} className="auth-form" autoComplete="on" noValidate>
                 {state.status === "error" && state.message ? (
                     <p className="auth-alert" role="alert">
                         {state.message}
@@ -32,7 +32,7 @@ export function LoginForm({ next }: { next: string }) {
                         name="email"
                         type="email"
                         className="auth-input"
-                        autoComplete="email"
+                        autoComplete="username"
                         defaultValue={state.values?.email}
                         required
                     />

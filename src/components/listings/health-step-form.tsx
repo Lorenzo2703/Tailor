@@ -37,10 +37,16 @@ export function HealthStepForm({ listingId, defaults }: { listingId: string; def
                 options={Object.entries(listingContent.origins).map(([value, label]) => ({ value, label }))}
                 defaultValue={values.origin} error={errorOf("origin")} />
 
-            <CheckboxField id="health-vaccinated" name="vaccinated" label={fields.vaccinated}
-                defaultChecked={defaults.vaccinated} />
-            <CheckboxField id="health-sterilized" name="sterilized" label={fields.sterilized}
-                defaultChecked={defaults.sterilized} />
+            <fieldset className="health-chip-fieldset" aria-describedby="health-selection-hint">
+                <legend className="auth-label">{listingContent.steps.health}</legend>
+                <p className="auth-hint" id="health-selection-hint">{fields.healthSelectionHint}</p>
+                <div className="health-chips">
+                    <CheckboxField id="health-vaccinated" name="vaccinated" label={fields.vaccinated}
+                        variant="chip" defaultChecked={defaults.vaccinated} />
+                    <CheckboxField id="health-sterilized" name="sterilized" label={fields.sterilized}
+                        variant="chip" defaultChecked={defaults.sterilized} />
+                </div>
+            </fieldset>
 
             <TextField id="health-notes" name="healthNotes" label={fields.healthNotes} multiline
                 optionalLabel={fields.optional} hint={fields.healthNotesHint} maxLength={2000}

@@ -36,7 +36,17 @@ export const publicContent = {
         apply: "Applica filtri",
         reset: "Azzera",
     },
-    card: { reserved: "Riservato", privateOwner: "Privato", gift: "Affido gratuito", adoption: "Adozione" },
+    card: {
+        reserved: "Riservato", privateOwner: "Privato", gift: "Affido gratuito", adoption: "Adozione",
+        carousel: {
+            label: (name: string) => `Foto di ${name}`,
+            role: "carosello",
+            slide: "foto",
+            previous: "Foto precedente",
+            next: "Foto successiva",
+            position: (current: number, total: number) => `Foto ${current} di ${total}`,
+        },
+    },
     detail: {
         about: "La sua storia",
         facts: "Scheda",

@@ -22,6 +22,8 @@ upload() {
 }
 
 upload "c1000000-0000-0000-0000-000000000001/luna-1.webp" "public/images/cane-01.webp"
+upload "c1000000-0000-0000-0000-000000000001/luna-2.webp" "public/images/cane-02.webp"
+upload "c1000000-0000-0000-0000-000000000001/luna-3.webp" "public/images/cane-04.webp"
 upload "c1000000-0000-0000-0000-000000000002/thor-1.webp" "public/images/cane-02.webp"
 upload "c1000000-0000-0000-0000-000000000003/mia-1.webp" "public/images/gatto-01.webp"
 upload "c1000000-0000-0000-0000-000000000004/rocky-1.webp" "public/images/cane-03.webp"

@@ -376,9 +376,27 @@ export async function uploadListingPhoto(
         return fail(prev, databaseMessage(insertError));
     }
 
+    return ok(prev, listingContent.photos.uploaded);
+}
+
+export async function finishListingPhotoUpload(
+    listingId: string,
+    uploaded: number,
+): Promise<ListingFormState> {
+    if (!uuid.safeParse(listingId).success || !Number.isInteger(uploaded) || uploaded < 1 || uploaded > listingRules.maxPhotos) {
+        return fail({ status: "idle", attempt: 0 }, errors.generic);
+    }
+
+    await requireUser(`/my-animals/${listingId}`);
+    const supabase = await createClient();
+    const { data: listing } = await supabase.from("listings").select("id").eq("id", listingId).maybeSingle();
+    if (!listing) {
+        return fail({ status: "idle", attempt: 0 }, errors.forbidden);
+    }
+
     await invalidatePublicListing(supabase, listingId);
     revalidatePath(`/my-animals/${listingId}`);
-    return ok(prev, listingContent.photos.added);
+    return ok({ status: "idle", attempt: 0 }, listingContent.photos.added(uploaded));
 }
 
 export async function deleteListingPhoto(photoId: string): Promise<void> {

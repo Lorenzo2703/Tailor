@@ -7,6 +7,7 @@ import { getSiteUrl } from "@/lib/site";
 import { truncate } from "@/lib/text";
 import { getPublicListing } from "@/server/queries/public";
 import { ReportButton } from "@/components/listings/report-button";
+import { PhotoViewer } from "@/components/listings/photo-viewer";
 
 const copy = publicContent.detail;
 
@@ -89,26 +90,21 @@ async function Detail({ slug }: { slug: string }) {
 
             <div className="pub-detail">
                 <div className="pub-gallery">
-                    {photos[0] ? (
-                        <div className="pub-gallery-main">
-                            <Image
-                                src={`/media/${photos[0].id}`}
-                                alt={photos[0].alt_text}
-                                fill
-                                sizes="(min-width: 62rem) 45vw, 92vw"
-                                priority
-                            />
-                        </div>
-                    ) : null}
-                    {photos.length > 1 ? (
-                        <ul className="pub-gallery-thumbs">
-                            {photos.slice(1).map((photo) => (
-                                <li key={photo.id} className="pub-gallery-thumb">
-                                    <Image src={`/media/${photo.id}`} alt={photo.alt_text} fill sizes="8rem" />
-                                </li>
-                            ))}
-                        </ul>
-                    ) : null}
+                    <ul className="pub-gallery-grid" aria-label={`${copy.photosLabel} ${listing.name}`}>
+                        {photos.map((photo, index) => (
+                            <li key={photo.id}>
+                                <PhotoViewer photos={photos.map(({ id, alt_text }) => ({ id, alt_text }))} initialIndex={index}>
+                                    <Image
+                                        src={`/media/${photo.id}`}
+                                        alt={photo.alt_text}
+                                        fill
+                                        sizes="(min-width: 62rem) 15vw, 30vw"
+                                        priority={index === 0}
+                                    />
+                                </PhotoViewer>
+                            </li>
+                        ))}
+                    </ul>
                 </div>
 
                 <div>
@@ -187,10 +183,14 @@ async function Detail({ slug }: { slug: string }) {
 
             <section className="pub-section" aria-labelledby="health-title">
                 <h2 id="health-title">{copy.health}</h2>
-                <p className="pub-prose">
-                    {listing.vaccinated ? copy.vaccinated : copy.notVaccinated} ·{" "}
-                    {listing.sterilized ? copy.sterilized : copy.notSterilized}
-                </p>
+                <ul className="health-chips">
+                    <li className="health-chip" data-active={listing.vaccinated === true}>
+                        {listing.vaccinated ? copy.vaccinated : copy.notVaccinated}
+                    </li>
+                    <li className="health-chip" data-active={listing.sterilized === true}>
+                        {listing.sterilized ? copy.sterilized : copy.notSterilized}
+                    </li>
+                </ul>
                 {listing.health_notes ? (
                     <p className="pub-prose" style={{ marginTop: "0.5rem" }}>
                         {listing.health_notes}
@@ -198,7 +198,7 @@ async function Detail({ slug }: { slug: string }) {
                 ) : null}
             </section>
 
-            <div className="mt-8 flex justify-end border-t border-neutral-200 pt-4">
+            <div className="listing-report-footer">
                 <ReportButton listingId={listing.listing_id} />
             </div>
         </>

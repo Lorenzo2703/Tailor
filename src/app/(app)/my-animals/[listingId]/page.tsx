@@ -6,6 +6,7 @@ import { z } from "zod";
 import { AnimalStepForm } from "@/components/listings/animal-step-form";
 import { HealthStepForm } from "@/components/listings/health-step-form";
 import { PhotoUploadForm } from "@/components/listings/photo-upload-form";
+import { PhotoViewer } from "@/components/listings/photo-viewer";
 import { PublishForm } from "@/components/listings/publish-form";
 import { StepsNav } from "@/components/listings/steps-nav";
 import { StoryStepForm } from "@/components/listings/story-step-form";
@@ -114,9 +115,11 @@ export default async function ListingEditorPage({
                             <p className="auth-hint" style={{ marginTop: "0.75rem" }}>{listingContent.photos.empty}</p>
                         ) : (
                             <ul className="photo-grid">
-                                {photos.map((photo) => (
+                                {photos.map((photo, index) => (
                                     <li key={photo.id}>
-                                        <Image src={`/media/${photo.id}`} alt={photo.alt_text} width={240} height={180} unoptimized />
+                                        <PhotoViewer photos={photos.map(({ id, alt_text }) => ({ id, alt_text }))} initialIndex={index}>
+                                            <Image src={`/media/${photo.id}`} alt={photo.alt_text} fill sizes="(min-width: 48rem) 15rem, 30vw" unoptimized />
+                                        </PhotoViewer>
                                         <form action={deleteListingPhoto.bind(null, photo.id)}>
                                             <button type="submit" className="auth-button" data-variant="secondary" data-size="small">
                                                 {listingContent.photos.remove}
@@ -127,7 +130,7 @@ export default async function ListingEditorPage({
                             </ul>
                         )}
                         {photos.length < listingRules.maxPhotos ? (
-                            <PhotoUploadForm listingId={listingId} />
+                            <PhotoUploadForm listingId={listingId} maxFiles={listingRules.maxPhotos - photos.length} />
                         ) : (
                             <p className="auth-hint">{listingContent.photos.max}</p>
                         )}

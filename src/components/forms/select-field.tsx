@@ -66,14 +66,16 @@ export function CheckboxField({
     name,
     label,
     defaultChecked,
+    variant = "default",
 }: {
     id: string;
     name: string;
     label: string;
     defaultChecked?: boolean;
+    variant?: "default" | "chip";
 }) {
     return (
-        <label className="auth-option" htmlFor={id}>
+        <label className={variant === "chip" ? "health-chip health-chip-select" : "auth-option"} htmlFor={id}>
             <input id={id} type="checkbox" name={name} defaultChecked={defaultChecked} />
             <span className="auth-option-title">{label}</span>
         </label>

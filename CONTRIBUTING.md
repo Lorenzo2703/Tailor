@@ -22,15 +22,7 @@ Make sure you have the following installed on your machine:
    - Run `npm run db:start` to spin up local Supabase containers.
    - Run `npm run dev` to start the Next.js server on `http://localhost:3000`.
 
-2. **Branching Strategy:**
-   - Branch off `main` with descriptive prefixes:
-     - `feat/<feature-name>`: New feature or user story
-     - `fix/<bug-name>`: Bug fixes
-     - `refactor/<name>`: Code improvements without functional change
-     - `test/<name>`: New tests or test improvements
-     - `docs/<name>`: Documentation updates
-
-3. **Commit Messages:**
+2. **Commit Messages:**
    - Use [Conventional Commits](https://www.conventionalcommits.org/):
      - `feat(listings): add photo reordering`
      - `fix(auth): redirect to dashboard after verification`
@@ -64,6 +56,12 @@ Make sure you have the following installed on your machine:
 
 5. **Exif & Image Safety:**
    - Any uploaded user image must be stripped of EXIF and GPS coordinates before being saved to public storage.
+
+6. **Photo Viewer:**
+   - Listing photos share `PhotoViewer`, powered by Yet Another React Lightbox with its Zoom plugin. Descriptions remain accessible via image alt text, without visible captions.
+   - Keep gesture handling in the library and UI labels in `src/lib/content/listings.ts`.
+   - Validate fullscreen, zoom, drag, mobile pinch and focus restoration with `bun run test:e2e -- e2e/public.spec.ts --grep "opens photos full screen" --workers=1`.
+   - Public listing cards use the shadcn Carousel (Embla) for ordered photos, fetched in one anonymous/RLS-protected batch per results page. Keep arrow controls outside detail links; single-photo cards need no controls.
 
 ---
 

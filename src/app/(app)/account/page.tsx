@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { ArrowUpRight, Bell, Building2, Heart, LogOut, MessageCircle, PawPrint, ShieldCheck, UserRound } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { authContent } from "@/lib/content/auth";
 import { inquiryContent } from "@/lib/content/inquiries";
 import { organizationContent } from "@/lib/content/organizations";
@@ -23,115 +25,161 @@ export default async function AccountPage() {
     const organizations = await getMyOrganizations(user.id);
     const prefs = await getNotificationPrefs(user.id);
     const orgCopy = organizationContent.account;
+    const displayName = user.profile?.display_name?.trim() || account.noName;
+    const initials = displayName === account.noName
+        ? null
+        : displayName.split(/\s+/).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
+    const roleLabel = role ? account.roles[role] : account.noName;
 
     return (
-        <>
-            <h1 className="auth-title">{account.title}</h1>
-            <dl className="auth-details">
+        <div className="account-page">
+            <header className="account-page-header">
                 <div>
-                    <dt>{account.email}</dt>
-                    <dd>{user.email}</dd>
+                    <p className="account-eyebrow">Area personale</p>
+                    <h1>{account.title}</h1>
+                    <p>Gestisci le tue attività, le preferenze e i dati del profilo.</p>
                 </div>
-                <div>
-                    <dt>{account.name}</dt>
-                    <dd>{user.profile?.display_name ?? account.noName}</dd>
+                <form action={signOut}>
+                    <Button type="submit" variant="outline" className="account-sign-out">
+                        <LogOut aria-hidden="true" />
+                        {account.signOut}
+                    </Button>
+                </form>
+            </header>
+
+            <section className="account-profile" aria-label="Riepilogo profilo">
+                <span className="account-avatar" aria-hidden="true">
+                    {initials ?? <UserRound />}
+                </span>
+                <div className="account-profile-copy">
+                    <h2>{displayName}</h2>
+                    <p>{user.email}</p>
                 </div>
-                <div>
-                    <dt>{account.type}</dt>
-                    <dd>{role ? account.roles[role] : account.noName}</dd>
+                <span className="account-role">
+                    <ShieldCheck aria-hidden="true" />
+                    {roleLabel}
+                </span>
+            </section>
+
+            <section className="account-section" aria-labelledby="account-shortcuts-title">
+                <div className="account-section-heading">
+                    <div>
+                        <h2 id="account-shortcuts-title">Le tue attività</h2>
+                        <p>Riprendi da dove avevi lasciato.</p>
+                    </div>
                 </div>
-            </dl>
+                <div className="account-shortcuts">
+                    <Link className="account-shortcut" href="/favorites">
+                        <span className="account-shortcut-icon"><Heart aria-hidden="true" /></span>
+                        <span className="account-shortcut-copy">
+                            <strong>{favoritesContent.title}</strong>
+                            <span>Gli animali che hai salvato</span>
+                        </span>
+                        <ArrowUpRight aria-hidden="true" className="account-shortcut-arrow" />
+                    </Link>
+                    <Link className="account-shortcut" href="/inquiries">
+                        <span className="account-shortcut-icon"><MessageCircle aria-hidden="true" /></span>
+                        <span className="account-shortcut-copy">
+                            <strong>{inquiryContent.inbox.title}</strong>
+                            <span>Le conversazioni con rifugi e privati</span>
+                        </span>
+                        <ArrowUpRight aria-hidden="true" className="account-shortcut-arrow" />
+                    </Link>
+                    <Link className="account-shortcut" href="/my-animals">
+                        <span className="account-shortcut-icon"><PawPrint aria-hidden="true" /></span>
+                        <span className="account-shortcut-copy">
+                            <strong>{orgCopy.myAnimals}</strong>
+                            <span>Gestisci i tuoi annunci</span>
+                        </span>
+                        <ArrowUpRight aria-hidden="true" className="account-shortcut-arrow" />
+                    </Link>
+                </div>
+            </section>
 
             {role === "admin" ? (
-                <section aria-labelledby="admin-title" style={{ marginTop: "1.5rem" }}>
-                    <h2 id="admin-title" className="auth-section-title">
-                        Pannello Amministrazione
-                    </h2>
-                    <div style={{ display: "flex", gap: "1rem", flexWrap: "wrap", marginTop: "0.75rem" }}>
-                        <Link className="auth-button" href="/admin/verifications" style={{ textDecoration: "none" }}>
-                            Verifica Rifugi ed Enti
+                <section className="account-section" aria-labelledby="admin-title">
+                    <div className="account-section-heading">
+                        <div>
+                            <h2 id="admin-title">Amministrazione</h2>
+                            <p>Strumenti di verifica e moderazione.</p>
+                        </div>
+                    </div>
+                    <div className="account-admin-links">
+                        <Link className="account-action-link" href="/admin/verifications">
+                            <Building2 aria-hidden="true" />
+                            Verifica rifugi ed enti
+                            <ArrowUpRight aria-hidden="true" />
                         </Link>
-                        <Link className="auth-button" href="/admin/reports" data-variant="secondary" style={{ textDecoration: "none" }}>
-                            Segnalazioni e Moderazione
+                        <Link className="account-action-link" href="/admin/reports">
+                            <ShieldCheck aria-hidden="true" />
+                            Segnalazioni e moderazione
+                            <ArrowUpRight aria-hidden="true" />
                         </Link>
                     </div>
                 </section>
             ) : null}
 
-            <section aria-labelledby="orgs-title">
-                <h2 id="orgs-title" className="auth-section-title">
-                    {orgCopy.organizations}
-                </h2>
+            <section className="account-section" aria-labelledby="orgs-title">
+                <div className="account-section-heading">
+                    <div>
+                        <h2 id="orgs-title">{orgCopy.organizations}</h2>
+                        <p>Rifugi e associazioni collegati al tuo profilo.</p>
+                    </div>
+                    <Link className="account-text-link" href="/organizations/new">
+                        {orgCopy.register}
+                        <ArrowUpRight aria-hidden="true" />
+                    </Link>
+                </div>
                 {organizations.length === 0 ? (
-                    <p className="auth-hint" style={{ marginTop: "0.75rem" }}>
-                        {orgCopy.none}
-                    </p>
+                    <div className="account-empty">
+                        <Building2 aria-hidden="true" />
+                        <p>{orgCopy.none}</p>
+                    </div>
                 ) : (
-                    <ul className="auth-list">
+                    <ul className="account-org-list">
                         {organizations.map((organization) => (
                             <li key={organization.id}>
-                                <Link className="auth-link" href={`/organizations/${organization.id}`}>
-                                    {organization.name}
+                                <Link className="account-org-link" href={`/organizations/${organization.id}`}>
+                                    <span className="account-org-icon"><Building2 aria-hidden="true" /></span>
+                                    <span>{organization.name}</span>
+                                    <span className="status-badge" data-status={organization.verification_status}>
+                                        {organizationContent.statuses[organization.verification_status].label}
+                                    </span>
+                                    <ArrowUpRight aria-hidden="true" className="account-org-arrow" />
                                 </Link>
-                                <span className="status-badge" data-status={organization.verification_status}>
-                                    {organizationContent.statuses[organization.verification_status].label}
-                                </span>
                             </li>
                         ))}
                     </ul>
                 )}
-                <p className="auth-footer" style={{ marginTop: "1rem" }}>
-                    <Link className="auth-link" href="/my-animals">
-                        {orgCopy.myAnimals}
-                    </Link>
-                </p>
-                <p className="auth-footer" style={{ marginTop: "0.5rem" }}>
-                    <Link className="auth-link" href="/organizations/new">
-                        {orgCopy.register}
-                    </Link>
-                </p>
-                {role === "admin" ? (<><p className="auth-footer" style={{ marginTop: "0.5rem" }}><Link className="auth-link" href="/admin/verifications">{orgCopy.adminQueue}</Link></p><p className="auth-footer" style={{ marginTop: "0.5rem" }}><Link className="auth-link" href="/admin/reports">Coda Segnalazioni & Takedown</Link></p></>) : null}
+                {role === "admin" ? (
+                    <div className="account-inline-links">
+                        <Link className="account-text-link" href="/admin/verifications">{orgCopy.adminQueue}</Link>
+                        <Link className="account-text-link" href="/admin/reports">Coda segnalazioni e takedown</Link>
+                    </div>
+                ) : null}
             </section>
 
-            <section aria-labelledby="favorites-title">
-                <h2 id="favorites-title" className="auth-section-title">
-                    {favoritesContent.title}
-                </h2>
-                <p className="auth-footer" style={{ marginTop: "0.5rem" }}>
-                    <Link className="auth-link" href="/favorites">
-                        Visualizza i tuoi annunci salvati
-                    </Link>
-                </p>
-            </section>
-
-            <section aria-labelledby="inquiries-title">
-                <h2 id="inquiries-title" className="auth-section-title">
-                    {inquiryContent.inbox.title}
-                </h2>
-                <p className="auth-footer" style={{ marginTop: "0.5rem" }}>
-                    <Link className="auth-link" href="/inquiries">
-                        {inquiryContent.inbox.title}
-                    </Link>
-                </p>
-                <h3 className="auth-section-title" style={{ marginTop: "1rem" }}>
-                    {inquiryContent.prefs.title}
-                </h3>
+            <section className="account-section account-preferences" aria-labelledby="preferences-title">
+                <div className="account-section-heading">
+                    <div>
+                        <h2 id="preferences-title">Preferenze</h2>
+                        <p>Decidi come ricevere aggiornamenti sulle richieste.</p>
+                    </div>
+                    <span className="account-preferences-icon"><Bell aria-hidden="true" /></span>
+                </div>
+                <h3>{inquiryContent.prefs.title}</h3>
                 <NotificationPrefsForm emailInquiries={prefs.emailInquiries} />
             </section>
 
             <AccountGdprSection />
 
-            <form action={signOut} style={{ marginTop: "2rem" }}>
-                <button type="submit" className="auth-button" data-variant="secondary">
-                    {account.signOut}
-                </button>
-            </form>
-            <p className="auth-footer">
-                <Link className="auth-link" href="/app">
+            <footer className="account-page-footer">
+                <Link className="account-text-link" href="/app">
                     {account.backToApp}
+                    <ArrowUpRight aria-hidden="true" />
                 </Link>
-            </p>
-        </>
+            </footer>
+        </div>
     );
 }
 

@@ -74,6 +74,13 @@ export async function signUp(prev: AuthFormState, formData: FormData): Promise<A
     });
 
     if (error) {
+        if (error.code === "user_already_exists") {
+            return {
+                status: "success",
+                message: authContent.signup.checkEmailBody,
+                attempt: prev.attempt + 1,
+            };
+        }
         if (error.code === "weak_password") {
             return fail(prev, errors.weakPassword, undefined, values);
         }
