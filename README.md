@@ -103,6 +103,8 @@ To run and contribute to this project, install the following tools:
 
 ## 🚀 Getting Started & Local Setup
 
+For this Windows + WSL Docker setup, see the [Italian local startup guide](docs/AVVIO_LOCALE_WSL.md).
+
 ### 1. Clone the repository
 ```bash
 git clone https://github.com/<your-username-or-org>/Tailor.git
@@ -256,4 +258,3 @@ The project follows sequential milestone delivery:
    bun run test
    ```
 4. Push your branch and open a Pull Request with a clear description of the problem solved, testing steps, and relevant screenshots.
-

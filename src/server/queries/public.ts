@@ -98,22 +98,24 @@ export async function getPublicListing(slug: string) {
     cacheLife("minutes");
 
     const supabase = createAnonClient();
-    const { data: listing } = await supabase
+    const { data: listing, error: listingError } = await supabase
         .from("public_listings")
         .select(
             "listing_id, slug, listing_type, listing_status, published_at, name, species, breed, sex, birth_date, size, story, good_with_kids, good_with_dogs, good_with_cats, apartment_ok, origin, city, organization_name, organization_slug, vaccinated, sterilized, health_notes, cover_photo_id",
         )
         .eq("slug", slug)
         .maybeSingle();
+    if (listingError) throw new Error("Public listing query failed", { cause: listingError });
     if (!listing?.listing_id) {
         return null;
     }
 
-    const { data: photos } = await supabase
+    const { data: photos, error: photosError } = await supabase
         .from("listing_photos")
         .select("id, alt_text")
         .eq("listing_id", listing.listing_id)
         .order("position", { ascending: true });
+    if (photosError) throw new Error("Public listing photos query failed", { cause: photosError });
 
     return { listing: withAge(listing), photos: photos ?? [] };
 }
