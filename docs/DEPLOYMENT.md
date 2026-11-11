@@ -44,6 +44,10 @@ Configurare le seguenti variabili nel pannello **Project Settings > Environment 
 | `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Production, Preview, Dev | Anon / Public Key del progetto |
 | `SUPABASE_SERVICE_ROLE_KEY` | Production, Preview, Dev | **Server-only:** Chiave di servizio per query amministrative protette |
 | `NEXT_PUBLIC_SITE_URL` | Production, Preview | URL canonico del sito (es. `https://tailor-adoptions.vercel.app`) |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | Production, Preview, Dev | Chiave pubblica Cloudflare Turnstile per il dominio dell'ambiente |
+| `TURNSTILE_SECRET_KEY` | Production, Preview, Dev | **Server-only:** chiave segreta Cloudflare Turnstile; non usare le chiavi di test in produzione |
+| `UPSTASH_REDIS_REST_URL` | Production, Preview, Dev | URL REST del database Upstash richiesto dal rate limit |
+| `UPSTASH_REDIS_REST_TOKEN` | Production, Preview, Dev | **Server-only:** token REST Upstash; il rate limit rifiuta gli invii se manca |
 | `NEXT_PUBLIC_STAGING` | Preview | Impostare su `true` per mostrare il banner di staging pilota |
 | `NEXT_PUBLIC_APP_ENV` | Production, Preview | `production` oppure `staging` |
 | `NEXT_PUBLIC_POSTHOG_KEY` | Production, Preview | API Key PostHog EU (attiva solo previo consenso utente) |

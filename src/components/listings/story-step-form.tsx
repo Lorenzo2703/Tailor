@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { SelectField } from "@/components/forms/select-field";
+import { RadioPillsField } from "@/components/forms/select-field";
 import { TextField } from "@/components/forms/text-field";
 import { listingContent } from "@/lib/content/listings";
 import { initialListingFormState } from "@/lib/listings/state";
@@ -22,7 +22,7 @@ const triOptions = [
     { value: "unknown", label: "Non so" },
     { value: "yes", label: "Sì" },
     { value: "no", label: "No" },
-];
+] as const;
 
 export function StoryStepForm({ listingId, defaults }: { listingId: string; defaults: Defaults }) {
     const [state, action, pending] = useActionState(saveStoryStep.bind(null, listingId), initialListingFormState);
@@ -40,14 +40,14 @@ export function StoryStepForm({ listingId, defaults }: { listingId: string; defa
 
             <fieldset className="auth-fieldset">
                 <legend className="auth-label">{fields.traits}</legend>
-                <SelectField id="trait-kids" name="goodWithKids" label={fields.goodWithKids} options={triOptions}
-                    defaultValue={values.goodWithKids} />
-                <SelectField id="trait-dogs" name="goodWithDogs" label={fields.goodWithDogs} options={triOptions}
-                    defaultValue={values.goodWithDogs} />
-                <SelectField id="trait-cats" name="goodWithCats" label={fields.goodWithCats} options={triOptions}
-                    defaultValue={values.goodWithCats} />
-                <SelectField id="trait-apartment" name="apartmentOk" label={fields.apartmentOk} options={triOptions}
-                    defaultValue={values.apartmentOk} />
+                <RadioPillsField id="trait-kids" name="goodWithKids" label={fields.goodWithKids}
+                    options={triOptions} defaultValue={values.goodWithKids} />
+                <RadioPillsField id="trait-dogs" name="goodWithDogs" label={fields.goodWithDogs}
+                    options={triOptions} defaultValue={values.goodWithDogs} />
+                <RadioPillsField id="trait-cats" name="goodWithCats" label={fields.goodWithCats}
+                    options={triOptions} defaultValue={values.goodWithCats} />
+                <RadioPillsField id="trait-apartment" name="apartmentOk" label={fields.apartmentOk}
+                    options={triOptions} defaultValue={values.apartmentOk} />
             </fieldset>
 
             <TextField id="story" name="story" label={fields.story} multiline required

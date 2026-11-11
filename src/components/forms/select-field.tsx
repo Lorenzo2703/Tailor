@@ -1,5 +1,51 @@
 type Option = { value: string; label: string };
 
+export function RadioPillsField({
+    id,
+    name,
+    label,
+    options,
+    defaultValue,
+    error,
+    hint,
+    required = false,
+}: {
+    id: string;
+    name: string;
+    label: string;
+    options: readonly Option[];
+    defaultValue?: string;
+    error?: string;
+    hint?: string;
+    required?: boolean;
+}) {
+    const describedBy = error ? `${id}-error` : hint ? `${id}-hint` : undefined;
+
+    return (
+        <fieldset className="health-chip-fieldset" aria-describedby={describedBy}>
+            <legend className="auth-label">{label}</legend>
+            <div className="health-chips" role="radiogroup" aria-label={label}>
+                {options.map((option) => (
+                    <label key={option.value} className="health-chip health-chip-select" htmlFor={`${id}-${option.value}`}>
+                        <input
+                            id={`${id}-${option.value}`}
+                            type="radio"
+                            name={name}
+                            value={option.value}
+                            defaultChecked={defaultValue === option.value}
+                            required={required}
+                            aria-describedby={describedBy}
+                        />
+                        <span>{option.label}</span>
+                    </label>
+                ))}
+            </div>
+            {error ? <p id={`${id}-error`} className="auth-field-error">{error}</p> : null}
+            {!error && hint ? <p id={`${id}-hint`} className="auth-hint">{hint}</p> : null}
+        </fieldset>
+    );
+}
+
 export function SelectField({
     id,
     name,

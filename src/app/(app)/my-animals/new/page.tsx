@@ -19,11 +19,7 @@ export default async function NewListingPage() {
             <h1 className="auth-title">{listingContent.list.create}</h1>
             <p className="auth-description">{listingContent.draftNotice}</p>
             <NewListingForm organizations={organizations} />
-            <p className="auth-footer">
-                <Link className="auth-link" href="/my-animals">
-                    {listingContent.manage.back}
-                </Link>
-            </p>
+            
         </>
     );
 }

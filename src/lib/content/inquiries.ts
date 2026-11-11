@@ -63,6 +63,7 @@ export const inquiryContent = {
     errors: {
         generic: "Qualcosa è andato storto. Riprova tra qualche istante.",
         rateLimited: "Hai inviato troppi messaggi. Riprova tra un po'.",
+        serviceUnavailable: "L'invio dei messaggi non è disponibile al momento. Riprova più tardi.",
         captcha: "Verifica di sicurezza non superata. Riprova.",
         forbidden: "Non hai i permessi per questa operazione.",
         messageInvalid: "Scrivi un messaggio tra 1 e 2000 caratteri.",

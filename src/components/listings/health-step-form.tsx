@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { CheckboxField, SelectField } from "@/components/forms/select-field";
+import { CheckboxField, RadioPillsField } from "@/components/forms/select-field";
 import { TextField } from "@/components/forms/text-field";
 import { listingContent } from "@/lib/content/listings";
 import { initialListingFormState } from "@/lib/listings/state";
@@ -33,7 +33,7 @@ export function HealthStepForm({ listingId, defaults }: { listingId: string; def
                 <p className="auth-alert" data-tone="success" role="status">{state.message}</p>
             ) : null}
 
-            <SelectField id="health-origin" name="origin" label={fields.origin} required placeholder="—"
+            <RadioPillsField id="health-origin" name="origin" label={fields.origin} required
                 options={Object.entries(listingContent.origins).map(([value, label]) => ({ value, label }))}
                 defaultValue={values.origin} error={errorOf("origin")} />
 

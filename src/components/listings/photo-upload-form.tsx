@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useTransition, type ChangeEvent, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import type { ListingFormState } from "@/lib/listings/state";
 import { listingContent } from "@/lib/content/listings";
 import { initialListingFormState } from "@/lib/listings/state";
@@ -9,6 +10,7 @@ import { finishListingPhotoUpload, uploadListingPhoto } from "@/server/actions/l
 const { fields, photos } = listingContent;
 
 export function PhotoUploadForm({ listingId, maxFiles }: { listingId: string; maxFiles: number }) {
+    const router = useRouter();
     const [state, setState] = useState<ListingFormState>(initialListingFormState);
     const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
     const [altTexts, setAltTexts] = useState<string[]>([]);
@@ -80,8 +82,9 @@ export function PhotoUploadForm({ listingId, maxFiles }: { listingId: string; ma
                         });
                     } else {
                         setState({ ...refreshed, message: photos.added(uploaded) });
+                        router.push(`/my-animals/${listingId}?step=5`);
                     }
-                    if (result.status === "success") {
+                    if (result.status === "success" && refreshed.status === "success") {
                         setSelectedFiles([]);
                         setAltTexts([]);
                     } else {

@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { z } from "zod";
 import { AnimalStepForm } from "@/components/listings/animal-step-form";
@@ -10,8 +9,10 @@ import { PhotoViewer } from "@/components/listings/photo-viewer";
 import { PublishForm } from "@/components/listings/publish-form";
 import { StepsNav } from "@/components/listings/steps-nav";
 import { StoryStepForm } from "@/components/listings/story-step-form";
+import { ListingCard } from "@/components/public/listing-card";
 import { listingRules } from "@/lib/compliance";
 import { listingContent } from "@/lib/content/listings";
+import { formatAge } from "@/lib/text";
 import { deleteListingPhoto, manageListing } from "@/server/actions/listings";
 import { getListingForEdit } from "@/server/queries/listings";
 import { requireUser } from "@/server/queries/session";
@@ -44,6 +45,21 @@ export default async function ListingEditorPage({
     const { review, manage } = listingContent;
     const status = listing.status;
     const canPublish = status === "draft" || status === "expired";
+    const previewCard = {
+        slug: null,
+        name: animal.name,
+        species: animal.species,
+        sex: animal.sex,
+        birth_date: animal.birth_date,
+        age: animal.birth_date ? formatAge(animal.birth_date) : null,
+        city: animal.city,
+        organization_name: data.organizationName,
+        listing_status: listing.status,
+        listing_type: listing.type,
+        cover_photo_id: photos[0]?.id ?? null,
+        cover_photo_alt: photos[0]?.alt_text ?? null,
+        photos: photos.map(({ id, alt_text }) => ({ id, alt_text })),
+    };
 
     const action = (name: string) => manageListing.bind(null, listingId, name);
 
@@ -156,6 +172,11 @@ export default async function ListingEditorPage({
                             </div>
                         )}
                         {canPublish ? <PublishForm listingId={listingId} republish={status === "expired"} /> : null}
+                        <section className="listing-preview mt-2" aria-labelledby="listing-preview-title">
+                            <ul className="pub-grid listing-preview-grid">
+                                <ListingCard item={previewCard} preview />
+                            </ul>
+                        </section>
                     </>
                 ) : null}
             </section>
@@ -171,6 +192,11 @@ export default async function ListingEditorPage({
                         {status === "reserved" ? (
                             <form action={action("reopen")}>
                                 <button type="submit" className="auth-button" data-variant="secondary" data-size="small">{manage.reopen}</button>
+                            </form>
+                        ) : null}
+                        {status === "adopted" ? (
+                            <form action={action("undoAdopted")}>
+                                <button type="submit" className="auth-button" data-variant="secondary" data-size="small">{manage.undoAdopted}</button>
                             </form>
                         ) : null}
                         {status === "published" || status === "reserved" ? (
@@ -196,11 +222,6 @@ export default async function ListingEditorPage({
                 </form>
             ) : null}
 
-            <p className="auth-footer">
-                <Link className="auth-link" href="/my-animals">
-                    {manage.back}
-                </Link>
-            </p>
         </>
     );
 }

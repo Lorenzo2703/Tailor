@@ -80,4 +80,4 @@ export const photoMetaSchema = z.object({
     altText: z.string({ error: errors.altText }).trim().min(3, errors.altText).max(300, errors.altText),
 });
 
-export const listingActionSchema = z.enum(["reserve", "reopen", "adopted", "withdraw", "extend", "delete"]);
+export const listingActionSchema = z.enum(["reserve", "reopen", "adopted", "undoAdopted", "withdraw", "extend", "delete"]);

@@ -55,7 +55,7 @@ test.describe("Accessibility — public shell", () => {
     await expect(page.locator("#login-password")).toHaveAttribute("autocomplete", "current-password");
   });
 
-  test("search filters collapse on mobile and stay open on desktop", async ({ page }) => {
+  test("search filters stay compact until expanded on every viewport", async ({ page }) => {
     await page.setViewportSize({ width: 375, height: 812 });
     await page.goto("/animals");
 
@@ -75,6 +75,8 @@ test.describe("Accessibility — public shell", () => {
     await expect(page.locator(".pub-grid > li")).toHaveCount(2);
 
     await page.setViewportSize({ width: 1280, height: 900 });
+    await expect(filterContent).toBeHidden();
+    await page.getByRole("button", { name: "Mostra filtri" }).click();
     await expect(filterContent).toBeVisible();
   });
 

@@ -1,7 +1,7 @@
 "use client";
 
 import { useActionState } from "react";
-import { SelectField } from "@/components/forms/select-field";
+import { RadioPillsField, SelectField } from "@/components/forms/select-field";
 import { AnimalBasicsFields } from "@/components/listings/animal-basics-fields";
 import { listingContent } from "@/lib/content/listings";
 import { initialListingFormState } from "@/lib/listings/state";
@@ -34,7 +34,7 @@ export function NewListingForm({ organizations }: { organizations: OwnerOption[]
 
             <SelectField id="listing-owner" name="owner" label={fields.owner} required
                 options={ownerOptions} defaultValue={values.owner ?? "personal"} error={errorOf("owner")} />
-            <SelectField id="listing-type" name="listingType" label={fields.type} required
+            <RadioPillsField id="listing-type" name="listingType" label={fields.type} required
                 options={[
                     { value: "gift", label: listingContent.types.gift },
                     { value: "adoption", label: listingContent.types.adoption },

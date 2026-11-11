@@ -173,12 +173,7 @@ export default async function AccountPage() {
 
             <AccountGdprSection />
 
-            <footer className="account-page-footer">
-                <Link className="account-text-link" href="/app">
-                    {account.backToApp}
-                    <ArrowUpRight aria-hidden="true" />
-                </Link>
-            </footer>
+            
         </div>
     );
 }

@@ -42,11 +42,7 @@ export default async function ContactPage({ params }: PageProps<"/animals/[slug]
                     <ContactForm listingId={data.listing.listing_id} animalSlug={slug} />
                 </>
             )}
-            <p className="auth-footer">
-                <Link className="auth-link" href={`/animals/${slug}`}>
-                    {contact.back}
-                </Link>
-            </p>
+           
         </>
     );
 }

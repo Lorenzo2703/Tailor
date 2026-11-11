@@ -58,9 +58,20 @@ export async function getListingForEdit(listingId: string) {
         return null;
     }
 
+    let organizationName: string | null = null;
+    if (animal.organization_id) {
+        const { data: organization } = await supabase
+            .from("organizations")
+            .select("name")
+            .eq("id", animal.organization_id)
+            .maybeSingle();
+        organizationName = organization?.name ?? null;
+    }
+
     return {
         listing,
         animal,
+        organizationName,
         health,
         microchip: privateData?.microchip_number ?? "",
         photos: photos ?? [],

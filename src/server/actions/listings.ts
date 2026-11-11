@@ -185,7 +185,7 @@ export async function saveAnimalBasics(
 
     await invalidatePublicListing(supabase, listingId);
     revalidatePath(`/my-animals/${listingId}`);
-    return ok(prev, listingContent.saved);
+    redirect(`/my-animals/${listingId}?step=4`);
 }
 
 export async function saveHealthStep(
@@ -248,7 +248,7 @@ export async function saveHealthStep(
 
     await invalidatePublicListing(supabase, listingId);
     revalidatePath(`/my-animals/${listingId}`);
-    return ok(prev, listingContent.saved);
+    redirect(`/my-animals/${listingId}?step=3`);
 }
 
 export async function saveStoryStep(
@@ -296,7 +296,7 @@ export async function saveStoryStep(
 
     await invalidatePublicListing(supabase, listingId);
     revalidatePath(`/my-animals/${listingId}`);
-    return ok(prev, listingContent.saved);
+    redirect(`/my-animals/${listingId}?step=4`);
 }
 
 export async function uploadListingPhoto(
@@ -465,6 +465,9 @@ export async function manageListing(listingId: string, action: string): Promise<
             break;
         case "adopted":
             await supabase.from("listings").update({ status: "adopted" }).eq("id", listingId).in("status", ["published", "reserved"]);
+            break;
+        case "undoAdopted":
+            await supabase.rpc("undo_adopted_listing", { p_listing_id: listingId });
             break;
         case "withdraw":
             await supabase.from("listings").update({ status: "expired" }).eq("id", listingId).in("status", ["published", "reserved"]);

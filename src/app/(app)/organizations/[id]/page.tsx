@@ -107,11 +107,6 @@ export default async function OrganizationPage({ params }: PageProps<"/organizat
                 ) : null}
             </section>
 
-            <p className="auth-footer">
-                <Link className="auth-link" href="/account">
-                    {manage.backToAccount}
-                </Link>
-            </p>
         </>
     );
 }

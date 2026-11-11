@@ -350,5 +350,36 @@ select is(
 );
 select is(tests.err(null, $$select public.switch_to_private_account()$$), '42501', 'anon cannot switch');
 
+-- Undo an accidental adoption
+
+select is(
+  tests.err('21000000-0000-0000-0000-000000000003', $$select public.undo_adopted_listing('24000000-0000-0000-0000-000000000013')$$),
+  '42501', 'another user cannot undo an adoption'
+);
+select is(
+  tests.err(null, $$select public.undo_adopted_listing('24000000-0000-0000-0000-000000000013')$$),
+  '42501', 'anon cannot undo an adoption'
+);
+select is(
+  tests.err('21000000-0000-0000-0000-000000000002', $$select public.undo_adopted_listing('24000000-0000-0000-0000-000000000013')$$),
+  'ok', 'the listing owner can undo an adoption'
+);
+select is(
+  (select status::text from public.listings where id = '24000000-0000-0000-0000-000000000013'),
+  'published', 'an unexpired adopted listing returns to published'
+);
+
+update public.listings
+set status = 'adopted', expires_at = now() - interval '1 minute'
+where id = '24000000-0000-0000-0000-000000000012';
+select is(
+  tests.err('21000000-0000-0000-0000-000000000002', $$select public.undo_adopted_listing('24000000-0000-0000-0000-000000000012')$$),
+  'ok', 'the owner can undo an adoption after expiry'
+);
+select is(
+  (select status::text from public.listings where id = '24000000-0000-0000-0000-000000000012'),
+  'expired', 'an expired adopted listing returns to expired, not published'
+);
+
 select * from finish();
 rollback;

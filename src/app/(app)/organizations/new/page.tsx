@@ -17,11 +17,6 @@ export default async function NewOrganizationPage() {
             <h1 className="auth-title">{organizationContent.new.title}</h1>
             <p className="auth-description">{organizationContent.new.description}</p>
             <CreateOrganizationForm />
-            <p className="auth-footer">
-                <Link className="auth-link" href="/account">
-                    {organizationContent.manage.backToAccount}
-                </Link>
-            </p>
         </>
     );
 }

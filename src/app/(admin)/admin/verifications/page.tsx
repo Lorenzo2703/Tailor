@@ -83,11 +83,7 @@ export default async function VerificationsPage() {
                 ))
             )}
 
-            <p className="auth-footer">
-                <Link className="auth-link" href="/account">
-                    {organizationContent.manage.backToAccount}
-                </Link>
-            </p>
+            
         </>
     );
 }

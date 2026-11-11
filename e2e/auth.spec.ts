@@ -139,6 +139,14 @@ test.describe("Autenticazione locale", () => {
             await expect(page.locator(".account-shortcut")).toHaveCount(3);
             await expect(page.getByRole("heading", { name: "Preferenze" })).toBeVisible();
             await expect(page.getByText(email)).toBeVisible();
+            const exportInfo = page.locator("#gdpr-export-info");
+            await expect(exportInfo).toBeHidden();
+            const exportInfoButton = page.locator(".account-gdpr-info-trigger").first();
+            await exportInfoButton.hover();
+            await expect(exportInfo).toBeVisible();
+            const deleteInfo = page.locator("#gdpr-delete-info");
+            await page.locator(".account-gdpr-info-trigger").nth(1).click();
+            await expect(deleteInfo).toBeVisible();
             expect(await page.locator("body").evaluate((body) => body.scrollWidth > body.clientWidth)).toBe(false);
         } finally {
             await removeUserByEmail(request, config, email);

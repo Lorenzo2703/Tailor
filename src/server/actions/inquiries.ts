@@ -18,7 +18,7 @@ import { checkRateLimit, getClientIp, rateLimitPolicies } from "@/server/rate-li
 import { verifyTurnstile } from "@/server/turnstile";
 
 const { errors } = inquiryContent;
-const uuid = z.uuid();
+const uuid = z.guid();
 
 function fail(prev: InquiryFormState, message: string, values?: InquiryFormState["values"]): InquiryFormState {
     return { status: "error", message, values, attempt: prev.attempt + 1 };
@@ -41,6 +41,14 @@ function text(value: FormDataEntryValue | null): string {
     return typeof value === "string" ? value.slice(0, 2000) : "";
 }
 
+function hasRateLimitConfig(): boolean {
+    return Boolean(process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN);
+}
+
+function hasTurnstileConfig(): boolean {
+    return Boolean(process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY && process.env.TURNSTILE_SECRET_KEY);
+}
+
 export async function createInquiry(
     listingId: string,
     animalSlug: string,
@@ -56,6 +64,9 @@ export async function createInquiry(
     const parsed = inquiryMessageSchema.safeParse({ message: formData.get("message") });
     if (!parsed.success) {
         return fail(prev, z.flattenError(parsed.error).fieldErrors.message?.[0] ?? errors.messageInvalid, values);
+    }
+    if (process.env.NODE_ENV === "production" && (!hasRateLimitConfig() || !hasTurnstileConfig())) {
+        return fail(prev, errors.serviceUnavailable, values);
     }
 
     const ip = await getClientIp();
@@ -99,6 +110,9 @@ export async function postInquiryMessage(
     const parsed = inquiryMessageSchema.safeParse({ message: formData.get("message") });
     if (!parsed.success) {
         return fail(prev, z.flattenError(parsed.error).fieldErrors.message?.[0] ?? errors.messageInvalid, values);
+    }
+    if (process.env.NODE_ENV === "production" && !hasRateLimitConfig()) {
+        return fail(prev, errors.serviceUnavailable, values);
     }
     if (!(await checkRateLimit(rateLimitPolicies.inquiryMessageUser, user.id))) {
         return fail(prev, errors.rateLimited, values);

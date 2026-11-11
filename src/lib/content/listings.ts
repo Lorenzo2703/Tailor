@@ -103,6 +103,7 @@ export const listingContent = {
     },
     review: {
         title: "Controlla e pubblica",
+        previewTitle: "Anteprima nella home",
         ready: "Tutto in ordine: puoi pubblicare.",
         blocked: "Prima di pubblicare completa queste voci:",
         publish: "Pubblica l'annuncio",
@@ -130,6 +131,7 @@ export const listingContent = {
         reserve: "Segna come riservato",
         reopen: "Torna disponibile",
         adopted: "Segna come affidato",
+        undoAdopted: "Annulla affidamento",
         withdraw: "Ritira l'annuncio",
         extend: "Rinnova per altri 90 giorni",
         delete: "Elimina la bozza",

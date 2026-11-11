@@ -47,11 +47,7 @@ export default async function MyAnimalsPage() {
                     {list.create}
                 </Link>
             </p>
-            <p className="auth-footer">
-                <Link className="auth-link" href="/account">
-                    {list.backToAccount}
-                </Link>
-            </p>
+            
         </>
     );
 }

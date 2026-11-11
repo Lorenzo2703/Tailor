@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useSyncExternalStore } from "react";
+import { useState } from "react";
 import Link from "next/link";
-import { ChevronDown, Search, SlidersHorizontal } from "lucide-react";
+import { RotateCcw, Search, SlidersHorizontal } from "lucide-react";
 import { SelectField } from "@/components/forms/select-field";
 import { Button } from "@/components/ui/button";
 import { publicContent } from "@/lib/content/public";
@@ -10,85 +10,55 @@ import { hasActiveFilters } from "@/lib/search-params";
 import type { SearchFilters } from "@/server/queries/public";
 
 const { filters: copy } = publicContent;
-const MOBILE_FILTERS_QUERY = "(max-width: 61.99rem)";
-
-function subscribeToMobileViewport(callback: () => void) {
-    const mediaQuery = window.matchMedia(MOBILE_FILTERS_QUERY);
-    mediaQuery.addEventListener("change", callback);
-    return () => mediaQuery.removeEventListener("change", callback);
-}
-
-function getIsMobileViewport() {
-    return window.matchMedia(MOBILE_FILTERS_QUERY).matches;
-}
-
-function getServerIsMobileViewport() {
-    return false;
-}
 
 const options = (labels: Record<string, string>) =>
     [{ value: "", label: copy.any }, ...Object.entries(labels).map(([value, label]) => ({ value, label }))];
 
 // A plain GET form: it works without JavaScript and every result page has a shareable URL.
 export function SearchFiltersForm({ filters, action }: { filters: SearchFilters; action: string }) {
-    const isMobile = useSyncExternalStore(
-        subscribeToMobileViewport,
-        getIsMobileViewport,
-        getServerIsMobileViewport,
-    );
-    const [mobileExpanded, setMobileExpanded] = useState(false);
-    const isExpanded = !isMobile || mobileExpanded;
+    const [isExpanded, setIsExpanded] = useState(false);
     const hasFilters = hasActiveFilters(filters);
 
     return (
         <form method="get" action={action} className="pub-filters" role="search" aria-label={copy.title}>
-            <div className="pub-filters-heading">
-                <div className="pub-filters-title">
-                    <span className="pub-filters-mark" aria-hidden="true">
-                        <SlidersHorizontal />
-                    </span>
-                    <h2>{copy.title}</h2>
+            <div className="pub-filter-toolbar">
+                <div className="pub-filter-search-control">
+                    <label className="sr-only" htmlFor="f-q">{copy.query}</label>
+                    <Search aria-hidden="true" />
+                    <input
+                        id="f-q"
+                        name="q"
+                        type="search"
+                        className="auth-input"
+                        maxLength={80}
+                        placeholder={copy.queryPlaceholder}
+                        defaultValue={filters.query}
+                    />
                 </div>
-                <div className="pub-filter-heading-actions">
-                    {hasFilters ? (
-                        <Link className="pub-filter-reset" href={action}>
-                            {copy.reset}
-                        </Link>
-                    ) : null}
-                    <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon-lg"
-                        className="pub-filter-toggle"
-                        aria-label={isExpanded ? "Nascondi filtri" : "Mostra filtri"}
-                        aria-expanded={isExpanded}
-                        aria-controls="pub-filter-options"
-                        onClick={() => setMobileExpanded((expanded) => !expanded)}
-                    >
-                        <ChevronDown aria-hidden="true" />
-                    </Button>
-                </div>
+                <Button type="submit" variant="outline" size="icon-lg" aria-label="Cerca animali">
+                    <Search aria-hidden="true" />
+                </Button>
+                <Button
+                    type="button"
+                    variant="outline"
+                    size="icon-lg"
+                    className="pub-filter-toggle"
+                    aria-label={isExpanded ? "Nascondi filtri" : "Mostra filtri"}
+                    aria-expanded={isExpanded}
+                    aria-controls="pub-filter-options"
+                    onClick={() => setIsExpanded((expanded) => !expanded)}
+                >
+                    <SlidersHorizontal aria-hidden="true" />
+                    {hasFilters ? <span className="pub-filter-active-mark" aria-hidden="true" /> : null}
+                </Button>
+                {hasFilters ? (
+                    <Link className="pub-filter-reset" href={action} aria-label={copy.reset} title={copy.reset}>
+                        <RotateCcw aria-hidden="true" />
+                    </Link>
+                ) : null}
             </div>
 
             <div id="pub-filter-options" className="pub-filter-content" hidden={!isExpanded}>
-                <div className="auth-field">
-                    <label className="auth-label" htmlFor="f-q">
-                        {copy.query}
-                    </label>
-                    <div className="pub-filter-search-control">
-                        <Search aria-hidden="true" />
-                        <input
-                            id="f-q"
-                            name="q"
-                            type="search"
-                            className="auth-input"
-                            maxLength={80}
-                            placeholder={copy.queryPlaceholder}
-                            defaultValue={filters.query}
-                        />
-                    </div>
-                </div>
-
                 <div className="pub-filter-attributes">
                     <SelectField id="f-species" name="species" label={copy.species}
                         options={options(publicContent.species)}

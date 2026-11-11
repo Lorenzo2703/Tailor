@@ -1,6 +1,7 @@
 "use client";
 
 import { useTransition, useState } from "react";
+import { Info } from "lucide-react";
 import { favoritesContent } from "@/lib/content/favorites";
 import { exportUserData, deleteAccount } from "@/server/actions/favorites";
 
@@ -9,6 +10,7 @@ export function AccountGdprSection() {
     const [isDeleting, startDelete] = useTransition();
     const [confirmation, setConfirmation] = useState("");
     const [error, setError] = useState<string | null>(null);
+    const [openInfo, setOpenInfo] = useState<"export" | "delete" | null>(null);
 
     const handleExport = () => {
         startExport(async () => {
@@ -62,8 +64,28 @@ export function AccountGdprSection() {
             )}
 
             <div className="account-gdpr-card">
-                <h3>{gdpr.exportTitle}</h3>
-                <p>{gdpr.exportDescription}</p>
+                <div className="account-gdpr-card-heading">
+                    <h3>{gdpr.exportTitle}</h3>
+                    <span className="account-gdpr-info" data-open={openInfo === "export"}>
+                        <button
+                            type="button"
+                            className="account-gdpr-info-trigger"
+                            aria-label={`Informazioni: ${gdpr.exportTitle}`}
+                            aria-describedby="gdpr-export-info"
+                            aria-expanded={openInfo === "export"}
+                            onClick={() => setOpenInfo((current) => current === "export" ? null : "export")}
+                            onKeyDown={(event) => {
+                                if (event.key === "Escape") setOpenInfo(null);
+                            }}
+                            title="Mostra informazioni"
+                        >
+                            <Info aria-hidden="true" />
+                        </button>
+                        <span id="gdpr-export-info" className="account-gdpr-tooltip" role="tooltip">
+                            {gdpr.exportDescription}
+                        </span>
+                    </span>
+                </div>
                 <button
                     type="button"
                     onClick={handleExport}
@@ -75,9 +97,28 @@ export function AccountGdprSection() {
             </div>
 
             <div className="account-gdpr-card" data-tone="danger">
-                <h3>{gdpr.deleteTitle}</h3>
-                <p>{gdpr.deleteDescription}</p>
-                <p className="account-gdpr-warning">{gdpr.deleteWarning}</p>
+                <div className="account-gdpr-card-heading">
+                    <h3>{gdpr.deleteTitle}</h3>
+                    <span className="account-gdpr-info" data-open={openInfo === "delete"}>
+                        <button
+                            type="button"
+                            className="account-gdpr-info-trigger"
+                            aria-label={`Informazioni: ${gdpr.deleteTitle}`}
+                            aria-describedby="gdpr-delete-info"
+                            aria-expanded={openInfo === "delete"}
+                            onClick={() => setOpenInfo((current) => current === "delete" ? null : "delete")}
+                            onKeyDown={(event) => {
+                                if (event.key === "Escape") setOpenInfo(null);
+                            }}
+                            title="Mostra informazioni"
+                        >
+                            <Info aria-hidden="true" />
+                        </button>
+                        <span id="gdpr-delete-info" className="account-gdpr-tooltip" role="tooltip">
+                            {gdpr.deleteDescription} <strong>{gdpr.deleteWarning}</strong>
+                        </span>
+                    </span>
+                </div>
 
                 <form onSubmit={handleDelete} className="account-gdpr-delete-form">
                     <label htmlFor="confirm-del">

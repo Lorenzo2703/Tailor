@@ -56,11 +56,7 @@ export default async function InquiriesPage() {
                     ))
             )}
 
-            <p className="auth-footer">
-                <Link className="auth-link" href="/account">
-                    {inquiryContent.nav.account}
-                </Link>
-            </p>
+            
         </>
     );
 }
